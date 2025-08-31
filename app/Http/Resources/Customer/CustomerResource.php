@@ -14,6 +14,7 @@ class CustomerResource extends Resource
             'middle_name' => $this->middle_name,
             'last_name' => $this->last_name,
             'extension' => $this->extension,
+            'fullname' => $this->full_name,
             'phone' => $this->phone,
             'email' => $this->email,
             'address' => $this->address,

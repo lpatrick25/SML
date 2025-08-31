@@ -20,4 +20,24 @@ class AdminController extends Controller
     {
         return view('admin.user-management');
     }
+
+    public function customersManagement()
+    {
+        return view('admin.customers-management');
+    }
+
+    public function servicesManagement()
+    {
+        return view('admin.services-management');
+    }
+
+    public function ordersManagement()
+    {
+        return view('admin.orders-management');
+    }
+
+    public function inventoryManagement()
+    {
+        return view('admin.inventory-management');
+    }
 }

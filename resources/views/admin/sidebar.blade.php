@@ -7,7 +7,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="{{ route('admin.dashboard') }}">
+        <a class="nav-link @yield('active-dashboard')" aria-current="page" href="{{ route('admin.dashboard') }}">
             <i class="bi bi-speedometer2"></i>
             <span class="item-name">Dashboard</span>
         </a>
@@ -36,15 +36,15 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link @yield('active-order-management')" href="{{ route('admin.ordersManagement') }}">
-            <i class="bi bi-bag-check"></i>
-            <span class="item-name">Orders</span>
-        </a>
-    </li>
-    <li class="nav-item">
         <a class="nav-link @yield('active-inventory-management')" href="{{ route('admin.inventoryManagement') }}">
             <i class="bi bi-box-seam"></i>
             <span class="item-name">Inventories</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @yield('active-orders-management')" href="{{ route('admin.ordersManagement') }}">
+            <i class="bi bi-bag-check"></i>
+            <span class="item-name">Transactions</span>
         </a>
     </li>
     <li>

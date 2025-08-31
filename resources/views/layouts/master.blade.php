@@ -52,7 +52,7 @@
     <!-- Bootstrap Fileinput -->
     <link rel="stylesheet" href="{{ asset('plugins/bootstrap-fileinput/css/fileinput.min.css') }}">
 
-
+    @yield('APP-STYLES')
 </head>
 
 <body class="  ">
