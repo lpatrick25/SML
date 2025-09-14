@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderItem extends Model
 {
+    public $table = 'transaction_items';
+
     protected $fillable = [
-        'order_id',
+        'transaction_id',
         'service_id',
         'quantity',
         'subtotal',
@@ -19,11 +21,16 @@ class OrderItem extends Model
 
     public function order()
     {
-        return $this->belongsTo(Order::class, 'order_id');
+        return $this->belongsTo(Order::class, 'transaction_id');
     }
 
     public function service()
     {
         return $this->belongsTo(Service::class, 'service_id');
+    }
+
+    public function itemLogs()
+    {
+        return $this->hasMany(ItemLog::class, 'transaction_item_id');
     }
 }

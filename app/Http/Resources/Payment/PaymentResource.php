@@ -10,7 +10,7 @@ class PaymentResource extends Resource
     {
         return [
             'id' => $this->id,
-            'order_id' => $this->order_id,
+            'transaction_id' => $this->transaction_id,
             'amount' => $this->amount,
             'payment_date' => $this->payment_date->toDateTimeString(),
             'payment_method' => $this->payment_method,
@@ -19,8 +19,8 @@ class PaymentResource extends Resource
             'order' => $this->whenLoaded('order', fn() => [
                 'id' => $this->order->id,
                 'customer_id' => $this->order->customer_id,
-                'order_date' => $this->order->order_date->toDateString(),
-                'order_status' => $this->order->order_status,
+                'transaction_date' => $this->order->transaction_date->toDateString(),
+                'transaction_status' => $this->order->transaction_status,
             ]),
         ];
     }

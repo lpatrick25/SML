@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Inventory;
+namespace App\Http\Resources\Item;
 
 use App\Http\Resources\Resource;
 
-class InventoryResource extends Resource
+class ItemResource extends Resource
 {
     public function toArray($request): array
     {

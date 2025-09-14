@@ -24,7 +24,7 @@ class PaymentController extends Controller
     public function index(Request $request): PaymentCollection
     {
         $validated = $request->validate([
-            'order_id' => 'nullable|exists:orders,id',
+            'transaction_id' => 'nullable|exists:orders,id',
             'payment_method' => 'nullable|in:Cash,GCash,PayMaya,Card,Other',
             'limit' => 'nullable|integer|min:1',
             'page' => 'nullable|integer|min:1',

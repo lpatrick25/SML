@@ -56,7 +56,7 @@
                                 <i class="bi bi-cart text-success fs-4"></i>
                             </div>
                             <div>
-                                <h5 class="card-title mb-1">Total Orders</h5>
+                                <h5 class="card-title mb-1">Total Transactions</h5>
                                 <h3 class="card-text text-dark fw-bold" id="total-orders">0</h3>
                             </div>
                         </div>
@@ -71,8 +71,8 @@
                                 <i class="bi bi-exclamation-triangle text-warning fs-4"></i>
                             </div>
                             <div>
-                                <h5 class="card-title mb-1">Low Inventory</h5>
-                                <h3 class="card-text text-dark fw-bold" id="low-inventory">0</h3>
+                                <h5 class="card-title mb-1">Low Item</h5>
+                                <h3 class="card-text text-dark fw-bold" id="low-item">0</h3>
                             </div>
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                                 <i class="bi bi-hourglass-split text-info fs-4"></i>
                             </div>
                             <div>
-                                <h5 class="card-title mb-1">Pending Orders</h5>
+                                <h5 class="card-title mb-1">Pending Transactions</h5>
                                 <h3 class="card-text text-dark fw-bold" id="pending-orders">0</h3>
                             </div>
                         </div>
@@ -95,12 +95,12 @@
             </div>
         </div>
 
-        <!-- Charts and Recent Orders -->
+        <!-- Charts and Recent Transactions -->
         <div class="row g-4">
             <div class="col-lg-6">
                 <div class="card shadow-sm border-0">
                     <div class="card-header bg-transparent">
-                        <h5 class="card-title mb-0">Order Status Distribution</h5>
+                        <h5 class="card-title mb-0">Transaction Status Distribution</h5>
                     </div>
                     <div class="card-body">
                         <canvas id="orderStatusChart" height="200"></canvas>
@@ -120,8 +120,8 @@
             <div class="col-12">
                 <div class="card shadow-sm border-0">
                     <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0">Recent Orders</h5>
-                        <a href="{{ route('orders.index') }}" class="btn btn-sm btn-primary">View All Orders</a>
+                        <h5 class="card-title mb-0">Recent Transactions</h5>
+                        <a href="{{ route('orders.index') }}" class="btn btn-sm btn-primary">View All Transactions</a>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -130,7 +130,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Customer</th>
-                                        <th>Order Date</th>
+                                        <th>Transaction Date</th>
                                         <th>Total Amount</th>
                                         <th>Status</th>
                                         <th>Action</th>
@@ -168,9 +168,9 @@
                 <div class="card shadow-sm border-0 text-center equal-height-card">
                     <div class="card-body">
                         <i class="bi bi-box-seam fs-2 text-warning"></i>
-                        <h5 class="card-title mt-2">Manage Inventory</h5>
-                        <a href="{{ route('inventories.index') }}" class="btn btn-outline-warning btn-sm">Go to
-                            Inventory</a>
+                        <h5 class="card-title mt-2">Manage Item</h5>
+                        <a href="{{ route('items.index') }}" class="btn btn-outline-warning btn-sm">Go to
+                            Item</a>
                     </div>
                 </div>
             </div>
@@ -178,8 +178,8 @@
                 <div class="card shadow-sm border-0 text-center equal-height-card">
                     <div class="card-body">
                         <i class="bi bi-cart fs-2 text-info"></i>
-                        <h5 class="card-title mt-2">Manage Orders</h5>
-                        <a href="{{ route('orders.index') }}" class="btn btn-outline-info btn-sm">Go to Orders</a>
+                        <h5 class="card-title mt-2">Manage Transactions</h5>
+                        <a href="{{ route('orders.index') }}" class="btn btn-outline-info btn-sm">Go to Transactions</a>
                     </div>
                 </div>
             </div>
@@ -203,7 +203,7 @@
                     // Update metrics
                     $('#total-customers').text(data.total_customers);
                     $('#total-orders').text(data.total_orders);
-                    $('#low-inventory').text(data.low_inventory);
+                    $('#low-item').text(data.low_item);
                     $('#pending-orders').text(data.pending_orders);
 
                     // Recent orders table
@@ -221,9 +221,9 @@
                                 <tr>
                                     <td>${order.id}</td>
                                     <td>${order.customer_name}</td>
-                                    <td>${order.order_date}</td>
+                                    <td>${order.transaction_date}</td>
                                     <td>$${parseFloat(order.total_amount).toFixed(2)}</td>
-                                    <td><span class="badge ${statusColors[order.order_status] || 'bg-secondary'} text-white">${order.order_status}</span></td>
+                                    <td><span class="badge ${statusColors[order.transaction_status] || 'bg-secondary'} text-white">${order.transaction_status}</span></td>
                                     <td>
                                         <a href="{{ route('orders.index') }}/${order.id}" class="btn btn-sm btn-info">
                                             <i class="bi bi-eye"></i> View
@@ -238,14 +238,14 @@
                             );
                     }
 
-                    // Order Status Chart
+                    // Transaction Status Chart
                     const orderStatusCtx = document.getElementById('orderStatusChart').getContext('2d');
                     new Chart(orderStatusCtx, {
                         type: 'pie',
                         data: {
-                            labels: Object.keys(data.order_status_distribution),
+                            labels: Object.keys(data.transaction_status_distribution),
                             datasets: [{
-                                data: Object.values(data.order_status_distribution),
+                                data: Object.values(data.transaction_status_distribution),
                                 backgroundColor: ['#FFC107', '#17A2B8', '#28A745',
                                     '#007BFF', '#DC3545'
                                 ],

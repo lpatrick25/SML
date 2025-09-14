@@ -1,8 +1,8 @@
 @extends('layouts.master')
 @section('APP-TITLE')
-    Inventory List
+    Item List
 @endsection
-@section('active-inventory-management')
+@section('active-item-management')
     active
 @endsection
 @section('APP-CONTENT')
@@ -21,7 +21,7 @@
                                     d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                             </svg>
                         </i>
-                        <span>New Inventory Item</span>
+                        <span>New Item</span>
                     </button>
                 </div>
             </div>
@@ -30,10 +30,10 @@
                     <table id="table" data-toggle="table" data-pagination="true" data-search="true"
                         data-show-columns="true" data-show-refresh="true" data-show-toggle="true" data-show-export="true"
                         data-filter-control="true" data-sticky-header="true" data-show-jump-to="true"
-                        data-url="{{ route('inventories.index') }}" data-toolbar="#toolbar">
+                        data-url="{{ route('items.index') }}" data-toolbar="#toolbar">
                         <thead>
                             <tr>
-                                <th data-field="id">ID</th>
+                                <th data-field="id">#</th>
                                 <th data-field="item_name">Item Name</th>
                                 <th data-field="description">Description</th>
                                 <th data-field="quantity">Quantity</th>
@@ -51,7 +51,7 @@
         <div class="modal-dialog modal-lg">
             <form id="addForm" class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title">Add New Inventory Item</h3>
+                    <h3 class="modal-title">Add New Item</h3>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -93,7 +93,7 @@
         <div class="modal-dialog modal-lg">
             <form id="updateForm" class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title">Update Inventory Item</h3>
+                    <h3 class="modal-title">Update Item</h3>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -142,10 +142,10 @@
                 return '<span class="text-muted">No actions</span>';
             }
             return `
-                <button class="btn btn-sm btn-primary me-1" onclick="editData(${row.id})" title="Edit">
+                <button type="button" class="btn btn-sm btn-primary me-1" onclick="editData(${row.id})" title="Edit">
                     <i class="bi bi-pencil"></i>
                 </button>
-                <button class="btn btn-sm btn-danger me-1" onclick="deleteData(${row.id})" title="Delete">
+                <button type="button" class="btn btn-sm btn-danger me-1" onclick="deleteData(${row.id})" title="Delete">
                     <i class="bi bi-trash"></i>
                 </button>
             `;
@@ -154,7 +154,7 @@
         function editData(id) {
             $.ajax({
                 method: 'GET',
-                url: `{{ route('inventories.index') }}/${id}`,
+                url: `{{ route('items.index') }}/${id}`,
                 dataType: 'json',
                 cache: false,
                 success: function(response) {
@@ -171,25 +171,25 @@
                 },
                 error: function(xhr) {
                     toastr.error(
-                        `Error fetching inventory data: ${xhr.responseJSON?.message || 'Unknown error'}`);
+                        `Error fetching item data: ${xhr.responseJSON?.message || 'Unknown error'}`);
                 }
             });
         }
 
         function deleteData(id) {
-            if (!confirm('Are you sure you want to delete this inventory item?')) return;
+            if (!confirm('Are you sure you want to delete this item item?')) return;
             $.ajax({
                 method: 'DELETE',
-                url: `{{ route('inventories.index') }}/${id}`,
+                url: `{{ route('items.index') }}/${id}`,
                 dataType: 'json',
                 cache: false,
                 success: function(response) {
                     $('#table').bootstrapTable('refresh');
-                    toastr.success(response.message || 'Inventory item deleted successfully');
+                    toastr.success(response.message || 'Item item deleted successfully');
                 },
                 error: function(xhr) {
                     toastr.error(
-                        `Error deleting inventory item: ${xhr.responseJSON?.message || 'Unknown error'}`);
+                        `Error deleting item item: ${xhr.responseJSON?.message || 'Unknown error'}`);
                 }
             });
         }
@@ -240,7 +240,7 @@
 
                 $.ajax({
                     method: 'POST',
-                    url: '{{ route('inventories.store') }}',
+                    url: '{{ route('items.store') }}',
                     data: $(this).serialize(),
                     dataType: 'json',
                     cache: false,
@@ -248,12 +248,12 @@
                         $('#addModal').modal('hide');
                         $('#table').bootstrapTable('refresh');
                         $('#addForm').trigger('reset');
-                        toastr.success(response.message || 'Inventory item added successfully');
+                        toastr.success(response.message || 'Item item added successfully');
                     },
                     error: function(xhr) {
                         const response = xhr.responseJSON || {};
                         toastr.error(
-                            `Error adding inventory item: ${response.message || 'Unknown error'}`
+                            `Error adding item item: ${response.message || 'Unknown error'}`
                             );
                         if (response.errors) {
                             for (const [field, messages] of Object.entries(response.errors)) {
@@ -277,7 +277,7 @@
 
                 $.ajax({
                     method: 'PUT',
-                    url: `{{ route('inventories.index') }}/${dataId}`,
+                    url: `{{ route('items.index') }}/${dataId}`,
                     data: $(this).serialize(),
                     dataType: 'json',
                     cache: false,
@@ -286,12 +286,12 @@
                         $('#table').bootstrapTable('refresh');
                         $('#updateForm').trigger('reset');
                         toastr.success(response.message ||
-                            'Inventory item updated successfully');
+                            'Item item updated successfully');
                     },
                     error: function(xhr) {
                         const response = xhr.responseJSON || {};
                         toastr.error(
-                            `Error updating inventory item: ${response.message || 'Unknown error'}`
+                            `Error updating item item: ${response.message || 'Unknown error'}`
                             );
                         if (response.errors) {
                             for (const [field, messages] of Object.entries(response.errors)) {

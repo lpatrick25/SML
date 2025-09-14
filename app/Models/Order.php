@@ -6,19 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    protected $table = 'transactions';
+
     protected $fillable = [
         'customer_id',
         'staff_id',
-        'order_date',
-        'order_status',
+        'transaction_date',
+        'transaction_status',
         'total_amount',
         'payment_status',
     ];
 
     protected $casts = [
-        'order_date' => 'date',
         'total_amount' => 'decimal:2',
-        'order_status' => 'string',
+        'transaction_status' => 'string',
         'payment_status' => 'string',
     ];
 
@@ -32,13 +33,13 @@ class Order extends Model
         return $this->belongsTo(User::class, 'staff_id');
     }
 
-    public function orderItems()
+    public function transactionItems()
     {
-        return $this->hasMany(OrderItem::class, 'order_id');
+        return $this->hasMany(OrderItem::class, 'transaction_id');
     }
 
     public function payments()
     {
-        return $this->hasMany(Payment::class, 'order_id');
+        return $this->hasMany(Payment::class, 'transaction_id');
     }
 }

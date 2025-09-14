@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
-use App\Models\Inventory;
+use App\Models\Item;
 use App\Models\Order;
 use App\Models\Service;
 use Illuminate\Http\JsonResponse;
@@ -21,8 +21,8 @@ class DashboardController extends Controller
         $totalCustomers = Customer::count();
         $totalServices = Service::count();
         $totalOrders = Order::count();
-        $lowInventory = Inventory::where('quantity', '<', 10)->count(); // Example threshold
-        $pendingOrders = Order::where('order_status', 'Pending')->count();
+        $lowItem = Item::where('quantity', '<', 10)->count(); // Example threshold
+        $pendingOrders = Order::where('transaction_status', 'Pending')->count();
         $recentOrders = Order::with(['customer'])
             ->orderBy('created_at', 'desc')
             ->take(5)
@@ -30,19 +30,19 @@ class DashboardController extends Controller
             ->map(fn($order) => [
                 'id' => $order->id,
                 'customer_name' => $order->customer ? "{$order->customer->first_name} {$order->customer->last_name}" : 'N/A',
-                'order_date' => $order->order_date->toDateString(),
+                'transaction_date' => $order->transaction_date,
                 'total_amount' => $order->total_amount,
-                'order_status' => $order->order_status,
+                'transaction_status' => $order->transaction_status,
             ]);
-        $orderStatusDistribution = Order::select('order_status', DB::raw('count(*) as count'))
-            ->groupBy('order_status')
-            ->pluck('count', 'order_status')
+        $orderStatusDistribution = Order::select('transaction_status', DB::raw('count(*) as count'))
+            ->groupBy('transaction_status')
+            ->pluck('count', 'transaction_status')
             ->toArray();
         $revenueByMonth = Order::select(
-            DB::raw("DATE_FORMAT(order_date, '%Y-%m') as month"),
+            DB::raw("DATE_FORMAT(transaction_date, '%Y-%m') as month"),
             DB::raw('SUM(total_amount) as total')
         )
-            ->where('order_date', '>=', now()->subMonths(6))
+            ->where('transaction_date', '>=', now()->subMonths(6))
             ->groupBy('month')
             ->orderBy('month')
             ->get()
@@ -56,10 +56,10 @@ class DashboardController extends Controller
                 'total_customers' => $totalCustomers,
                 'total_services' => $totalServices,
                 'total_orders' => $totalOrders,
-                'low_inventory' => $lowInventory,
+                'low_item' => $lowItem,
                 'pending_orders' => $pendingOrders,
                 'recent_orders' => $recentOrders,
-                'order_status_distribution' => $orderStatusDistribution,
+                'transaction_status_distribution' => $orderStatusDistribution,
                 'revenue_by_month' => $revenueByMonth,
             ],
         ]);

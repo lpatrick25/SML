@@ -11,7 +11,7 @@ class PaymentServices
     {
         return Payment::query()
             ->with('order')
-            ->when($validated['order_id'] ?? null, fn($q) => $q->where('order_id', $validated['order_id']))
+            ->when($validated['transaction_id'] ?? null, fn($q) => $q->where('transaction_id', $validated['transaction_id']))
             ->when($validated['payment_method'] ?? null, fn($q) => $q->where('payment_method', $validated['payment_method']));
     }
 

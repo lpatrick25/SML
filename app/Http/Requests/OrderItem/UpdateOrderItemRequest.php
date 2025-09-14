@@ -15,7 +15,7 @@ class UpdateOrderItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'order_id' => ['required', Rule::exists('orders', 'id')],
+            'transaction_id' => ['required', Rule::exists('orders', 'id')],
             'service_id' => ['required', Rule::exists('services', 'id')],
             'quantity' => ['required', 'integer', 'min:1'],
             'subtotal' => ['required', 'numeric', 'min:0', 'max:99999999.99'],
@@ -25,7 +25,7 @@ class UpdateOrderItemRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'order_id.exists' => 'The selected order does not exist.',
+            'transaction_id.exists' => 'The selected order does not exist.',
             'service_id.exists' => 'The selected service does not exist.',
             'quantity.min' => 'The quantity must be at least 1.',
             'subtotal.min' => 'The subtotal cannot be negative.',

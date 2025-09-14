@@ -39,8 +39,8 @@ class User extends Authenticatable
         return $this->hasMany(Order::class, 'staff_id');
     }
 
-    public function inventoryLogs()
+    public function itemLogs()
     {
-        return $this->hasMany(InventoryLog::class, 'staff_id');
+        return $this->hasMany(ItemLog::class, 'staff_id');
     }
 }

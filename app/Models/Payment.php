@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Payment extends Model
 {
     protected $fillable = [
-        'order_id',
+        'transaction_id',
         'amount',
         'payment_date',
         'payment_method',
@@ -15,12 +15,11 @@ class Payment extends Model
 
     protected $casts = [
         'amount' => 'decimal:2',
-        'payment_date' => 'datetime',
         'payment_method' => 'string',
     ];
 
     public function order()
     {
-        return $this->belongsTo(Order::class, 'order_id');
+        return $this->belongsTo(Order::class, 'transaction_id');
     }
 }

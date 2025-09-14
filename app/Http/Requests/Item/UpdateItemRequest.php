@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Inventory;
+namespace App\Http\Requests\Item;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateInventoryRequest extends FormRequest
+class UpdateItemRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -15,7 +15,7 @@ class UpdateInventoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'item_name' => ['required', 'string', 'max:255', Rule::unique('inventories', 'item_name')->ignore($this->route('inventory')->id)],
+            'item_name' => ['required', 'string', 'max:255', Rule::unique('items', 'item_name')->ignore($this->route('item')->id)],
             'description' => ['nullable', 'string'],
             'quantity' => ['required', 'integer', 'min:0'],
             'unit' => ['required', 'string', 'max:50'],

@@ -25,7 +25,7 @@ class OrderController extends Controller
     {
         $validated = $request->validate([
             'customer_id' => 'nullable|exists:customers,id',
-            'order_status' => 'nullable|in:Pending,In Progress,Completed,Picked Up,Cancelled',
+            'transaction_status' => 'nullable|in:Pending,In Progress,Completed,Picked Up,Cancelled',
             'limit' => 'nullable|integer|min:1',
             'page' => 'nullable|integer|min:1',
         ]);

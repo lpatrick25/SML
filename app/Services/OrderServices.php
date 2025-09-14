@@ -12,7 +12,7 @@ class OrderServices
         return Order::query()
             ->with(['customer', 'staff'])
             ->when($validated['customer_id'] ?? null, fn($q) => $q->where('customer_id', $validated['customer_id']))
-            ->when($validated['order_status'] ?? null, fn($q) => $q->where('order_status', $validated['order_status']));
+            ->when($validated['transaction_status'] ?? null, fn($q) => $q->where('transaction_status', $validated['transaction_status']));
     }
 
     public function create(array $data): Order

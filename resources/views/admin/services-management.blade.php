@@ -33,10 +33,10 @@
                         data-url="{{ route('services.index') }}" data-toolbar="#toolbar">
                         <thead>
                             <tr>
-                                <th data-field="id">ID</th>
+                                <th data-field="id">#</th>
                                 <th data-field="name">Name</th>
                                 <th data-field="description">Description</th>
-                                <th data-field="kilograms">Kilograms</th>
+                                <th data-field="kilograms">KG Limit</th>
                                 <th data-field="price" data-formatter="priceFormatter">Price</th>
                                 <th data-field="action" data-formatter="getActionFormatter">Action</th>
                             </tr>
@@ -60,7 +60,7 @@
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                         <div class="col-lg-6 form-group">
-                            <label for="kilograms">Kilograms: <span class="text-danger">*</span></label>
+                            <label for="kilograms">KG Limit: <span class="text-danger">*</span></label>
                             <input type="number" class="form-control" id="kilograms" name="kilograms" required
                                 min="0">
                         </div>
@@ -95,7 +95,7 @@
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                         <div class="col-lg-6 form-group">
-                            <label for="kilograms">Kilograms: <span class="text-danger">*</span></label>
+                            <label for="kilograms">KG Limit: <span class="text-danger">*</span></label>
                             <input type="number" class="form-control" id="kilograms" name="kilograms" required
                                 min="0">
                         </div>
@@ -132,10 +132,10 @@
                 return '<span class="text-muted">No actions</span>';
             }
             return `
-                <button class="btn btn-sm btn-primary me-1" onclick="editData(${row.id})" title="Edit">
+                <button type="button" class="btn btn-sm btn-primary me-1" onclick="editData(${row.id})" title="Edit">
                     <i class="bi bi-pencil"></i>
                 </button>
-                <button class="btn btn-sm btn-danger me-1" onclick="deleteData(${row.id})" title="Delete">
+                <button type="button" class="btn btn-sm btn-danger me-1" onclick="deleteData(${row.id})" title="Delete">
                     <i class="bi bi-trash"></i>
                 </button>
             `;

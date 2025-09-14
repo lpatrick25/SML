@@ -33,11 +33,11 @@
                         data-url="{{ route('customers.index') }}" data-toolbar="#toolbar">
                         <thead>
                             <tr>
-                                <th data-field="id">ID</th>
+                                <th data-field="id">#</th>
                                 <th data-field="fullname" data-formatter="getFullnameFormatter">Fullname</th>
                                 <th data-field="phone">Phone</th>
                                 <th data-field="email">Email</th>
-                                <th data-field="address">Address</th>
+                                <th data-field="address" data-formatter="getAddressFormatter">Address</th>
                                 <th data-field="action" data-formatter="getActionFormatter">Action</th>
                             </tr>
                         </thead>
@@ -81,12 +81,76 @@
                         </div>
                         <div class="col-lg-6 form-group">
                             <label for="address">Address: <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="address" name="address" required>
+                            <select name="address" id="address" class="form-control">
+                                <option value="Alangilan">Brgy Alangilan, Abuyog, Leyte</option>
+                                <option value="Anibongan">Brgy Anibongan, Abuyog, Leyte</option>
+                                <option value="Bagacay">Brgy Bagacay, Abuyog, Leyte</option>
+                                <option value="Bahay">Brgy Bahay, Abuyog, Leyte</option>
+                                <option value="Balinsasayao">Brgy Balinsasayao, Abuyog, Leyte</option>
+                                <option value="Balocawe">Brgy Balocawe, Abuyog, Leyte</option>
+                                <option value="Balocawehay">Brgy Balocawehay, Abuyog, Leyte</option>
+                                <option value="Barayong">Brgy Barayong, Abuyog, Leyte</option>
+                                <option value="Bayabas">Brgy Bayabas, Abuyog, Leyte</option>
+                                <option value="Bito">Brgy Bito, Abuyog, Leyte</option>
+                                <option value="Buaya">Brgy Buaya, Abuyog, Leyte</option>
+                                <option value="Buenavista">Brgy Buenavista, Abuyog, Leyte</option>
+                                <option value="Bulak">Brgy Bulak, Abuyog, Leyte</option>
+                                <option value="Bunga">Brgy Bunga, Abuyog, Leyte</option>
+                                <option value="Buntay">Brgy Buntay, Abuyog, Leyte</option>
+                                <option value="Burubud-an">Brgy Burubud-an, Abuyog, Leyte</option>
+                                <option value="Cadac-an">Brgy Cadac-an, Abuyog, Leyte</option>
+                                <option value="Cagbolo">Brgy Cagbolo, Abuyog, Leyte</option>
+                                <option value="Can-aporong">Brgy Can-aporong, Abuyog, Leyte</option>
+                                <option value="Can-uguib">Brgy Can-uguib, Abuyog, Leyte</option>
+                                <option value="Canmarating">Brgy Canmarating, Abuyog, Leyte</option>
+                                <option value="Capilian">Brgy Capilian, Abuyog, Leyte</option>
+                                <option value="Combis">Brgy Combis, Abuyog, Leyte</option>
+                                <option value="Dingle">Brgy Dingle, Abuyog, Leyte</option>
+                                <option value="Guintagbucan">Brgy Guintagbucan, Abuyog, Leyte</option>
+                                <option value="Hampipila">Brgy Hampipila, Abuyog, Leyte</option>
+                                <option value="Katipunan">Brgy Katipunan, Abuyog, Leyte</option>
+                                <option value="Kikilo">Brgy Kikilo, Abuyog, Leyte</option>
+                                <option value="Laray">Brgy Laray, Abuyog, Leyte</option>
+                                <option value="Lawa-an">Brgy Lawa-an, Abuyog, Leyte</option>
+                                <option value="Libertad">Brgy Libertad, Abuyog, Leyte</option>
+                                <option value="Loyonsawang">Brgy Loyonsawang, Abuyog, Leyte</option>
+                                <option value="Mag-atubang">Brgy Mag-atubang, Abuyog, Leyte</option>
+                                <option value="Mahagna">Brgy Mahagna, Abuyog, Leyte</option>
+                                <option value="Mahayahay">Brgy Mahayahay, Abuyog, Leyte</option>
+                                <option value="Maitum">Brgy Maitum, Abuyog, Leyte</option>
+                                <option value="Malaguicay">Brgy Malaguicay, Abuyog, Leyte</option>
+                                <option value="Matagnao">Brgy Matagnao, Abuyog, Leyte</option>
+                                <option value="Nalibunan">Brgy Nalibunan, Abuyog, Leyte</option>
+                                <option value="Nebga">Brgy Nebga, Abuyog, Leyte</option>
+                                <option value="New Taligue">Brgy New Taligue, Abuyog, Leyte</option>
+                                <option value="Odiongan">Brgy Odiongan, Abuyog, Leyte</option>
+                                <option value="Old Taligue">Brgy Old Taligue, Abuyog, Leyte</option>
+                                <option value="Pagsang-an">Brgy Pagsang-an, Abuyog, Leyte</option>
+                                <option value="Paguite">Brgy Paguite, Abuyog, Leyte</option>
+                                <option value="Parasanon">Brgy Parasanon, Abuyog, Leyte</option>
+                                <option value="Picas Sur">Brgy Picas Sur, Abuyog, Leyte</option>
+                                <option value="Pilar">Brgy Pilar, Abuyog, Leyte</option>
+                                <option value="Pinamanagan">Brgy Pinamanagan, Abuyog, Leyte</option>
+                                <option value="Salvacion">Brgy Salvacion, Abuyog, Leyte</option>
+                                <option value="San Francisco">Brgy San Francisco, Abuyog, Leyte</option>
+                                <option value="San Isidro">Brgy San Isidro, Abuyog, Leyte</option>
+                                <option value="San Roque">Brgy San Roque, Abuyog, Leyte</option>
+                                <option value="Santa Fe">Brgy Santa Fe, Abuyog, Leyte</option>
+                                <option value="Santa Lucia">Brgy Santa Lucia, Abuyog, Leyte</option>
+                                <option value="Santo Niño">Brgy Santo Niño, Abuyog, Leyte</option>
+                                <option value="Tabigue">Brgy Tabigue, Abuyog, Leyte</option>
+                                <option value="Tadoc">Brgy Tadoc, Abuyog, Leyte</option>
+                                <option value="Tib-o">Brgy Tib-o, Abuyog, Leyte</option>
+                                <option value="Tinalian">Brgy Tinalian, Abuyog, Leyte</option>
+                                <option value="Tinocolan">Brgy Tinocolan, Abuyog, Leyte</option>
+                                <option value="Tuy-a">Brgy Tuy-a, Abuyog, Leyte</option>
+                                <option value="Victory">Brgy Victory, Abuyog, Leyte</option>
+                            </select>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer text-right">
-                    <button type="submit" class="btn btn-md btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-md btn-primary">Save</button>
                     <button type="button" class="btn btn-md btn-danger" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </form>
@@ -126,12 +190,76 @@
                         </div>
                         <div class="col-lg-6 form-group">
                             <label for="address">Address: <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="address" name="address" required>
+                            <select name="address" id="address" class="form-control">
+                                <option value="Alangilan">Brgy Alangilan, Abuyog, Leyte</option>
+                                <option value="Anibongan">Brgy Anibongan, Abuyog, Leyte</option>
+                                <option value="Bagacay">Brgy Bagacay, Abuyog, Leyte</option>
+                                <option value="Bahay">Brgy Bahay, Abuyog, Leyte</option>
+                                <option value="Balinsasayao">Brgy Balinsasayao, Abuyog, Leyte</option>
+                                <option value="Balocawe">Brgy Balocawe, Abuyog, Leyte</option>
+                                <option value="Balocawehay">Brgy Balocawehay, Abuyog, Leyte</option>
+                                <option value="Barayong">Brgy Barayong, Abuyog, Leyte</option>
+                                <option value="Bayabas">Brgy Bayabas, Abuyog, Leyte</option>
+                                <option value="Bito">Brgy Bito, Abuyog, Leyte</option>
+                                <option value="Buaya">Brgy Buaya, Abuyog, Leyte</option>
+                                <option value="Buenavista">Brgy Buenavista, Abuyog, Leyte</option>
+                                <option value="Bulak">Brgy Bulak, Abuyog, Leyte</option>
+                                <option value="Bunga">Brgy Bunga, Abuyog, Leyte</option>
+                                <option value="Buntay">Brgy Buntay, Abuyog, Leyte</option>
+                                <option value="Burubud-an">Brgy Burubud-an, Abuyog, Leyte</option>
+                                <option value="Cadac-an">Brgy Cadac-an, Abuyog, Leyte</option>
+                                <option value="Cagbolo">Brgy Cagbolo, Abuyog, Leyte</option>
+                                <option value="Can-aporong">Brgy Can-aporong, Abuyog, Leyte</option>
+                                <option value="Can-uguib">Brgy Can-uguib, Abuyog, Leyte</option>
+                                <option value="Canmarating">Brgy Canmarating, Abuyog, Leyte</option>
+                                <option value="Capilian">Brgy Capilian, Abuyog, Leyte</option>
+                                <option value="Combis">Brgy Combis, Abuyog, Leyte</option>
+                                <option value="Dingle">Brgy Dingle, Abuyog, Leyte</option>
+                                <option value="Guintagbucan">Brgy Guintagbucan, Abuyog, Leyte</option>
+                                <option value="Hampipila">Brgy Hampipila, Abuyog, Leyte</option>
+                                <option value="Katipunan">Brgy Katipunan, Abuyog, Leyte</option>
+                                <option value="Kikilo">Brgy Kikilo, Abuyog, Leyte</option>
+                                <option value="Laray">Brgy Laray, Abuyog, Leyte</option>
+                                <option value="Lawa-an">Brgy Lawa-an, Abuyog, Leyte</option>
+                                <option value="Libertad">Brgy Libertad, Abuyog, Leyte</option>
+                                <option value="Loyonsawang">Brgy Loyonsawang, Abuyog, Leyte</option>
+                                <option value="Mag-atubang">Brgy Mag-atubang, Abuyog, Leyte</option>
+                                <option value="Mahagna">Brgy Mahagna, Abuyog, Leyte</option>
+                                <option value="Mahayahay">Brgy Mahayahay, Abuyog, Leyte</option>
+                                <option value="Maitum">Brgy Maitum, Abuyog, Leyte</option>
+                                <option value="Malaguicay">Brgy Malaguicay, Abuyog, Leyte</option>
+                                <option value="Matagnao">Brgy Matagnao, Abuyog, Leyte</option>
+                                <option value="Nalibunan">Brgy Nalibunan, Abuyog, Leyte</option>
+                                <option value="Nebga">Brgy Nebga, Abuyog, Leyte</option>
+                                <option value="New Taligue">Brgy New Taligue, Abuyog, Leyte</option>
+                                <option value="Odiongan">Brgy Odiongan, Abuyog, Leyte</option>
+                                <option value="Old Taligue">Brgy Old Taligue, Abuyog, Leyte</option>
+                                <option value="Pagsang-an">Brgy Pagsang-an, Abuyog, Leyte</option>
+                                <option value="Paguite">Brgy Paguite, Abuyog, Leyte</option>
+                                <option value="Parasanon">Brgy Parasanon, Abuyog, Leyte</option>
+                                <option value="Picas Sur">Brgy Picas Sur, Abuyog, Leyte</option>
+                                <option value="Pilar">Brgy Pilar, Abuyog, Leyte</option>
+                                <option value="Pinamanagan">Brgy Pinamanagan, Abuyog, Leyte</option>
+                                <option value="Salvacion">Brgy Salvacion, Abuyog, Leyte</option>
+                                <option value="San Francisco">Brgy San Francisco, Abuyog, Leyte</option>
+                                <option value="San Isidro">Brgy San Isidro, Abuyog, Leyte</option>
+                                <option value="San Roque">Brgy San Roque, Abuyog, Leyte</option>
+                                <option value="Santa Fe">Brgy Santa Fe, Abuyog, Leyte</option>
+                                <option value="Santa Lucia">Brgy Santa Lucia, Abuyog, Leyte</option>
+                                <option value="Santo Niño">Brgy Santo Niño, Abuyog, Leyte</option>
+                                <option value="Tabigue">Brgy Tabigue, Abuyog, Leyte</option>
+                                <option value="Tadoc">Brgy Tadoc, Abuyog, Leyte</option>
+                                <option value="Tib-o">Brgy Tib-o, Abuyog, Leyte</option>
+                                <option value="Tinalian">Brgy Tinalian, Abuyog, Leyte</option>
+                                <option value="Tinocolan">Brgy Tinocolan, Abuyog, Leyte</option>
+                                <option value="Tuy-a">Brgy Tuy-a, Abuyog, Leyte</option>
+                                <option value="Victory">Brgy Victory, Abuyog, Leyte</option>
+                            </select>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer text-right">
-                    <button type="submit" class="btn btn-md btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-md btn-primary">Save</button>
                     <button type="button" class="btn btn-md btn-danger" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </form>
@@ -142,6 +270,17 @@
 @section('APP-SCRIPT')
     <script type="text/javascript">
         let dataId;
+
+        function getAddressFormatter(value, row) {
+            // Handle missing row or invalid ID
+            if (!row || row.id === undefined || row.id === null) {
+                return `<span class="badge bg-secondary text-light fw-semibold px-3 py-2">No actions</span>`;
+            }
+
+            return `<span class="badge rounded-pill bg-info text-white fw-semibold px-3 py-2 shadow-sm">
+                <i class="bi bi-geo-alt-fill me-1"></i>Brgy. ${value}, Abuyog, Leyte
+            </span>`;
+        }
 
         function getFullnameFormatter(value, row) {
             if (!row) return 'N/A';
@@ -159,10 +298,10 @@
                 return '<span class="text-muted">No actions</span>';
             }
             return `
-                <button class="btn btn-sm btn-primary me-1" onclick="editData(${row.id})" title="Edit">
+                <button type="button" class="btn btn-sm btn-primary me-1" onclick="editData(${row.id})" title="Edit">
                     <i class="bi bi-pencil"></i>
                 </button>
-                <button class="btn btn-sm btn-danger me-1" onclick="deleteData(${row.id})" title="Delete">
+                <button type="button" class="btn btn-sm btn-danger me-1" onclick="deleteData(${row.id})" title="Delete">
                     <i class="bi bi-trash"></i>
                 </button>
             `;

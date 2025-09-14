@@ -36,8 +36,13 @@ class AdminController extends Controller
         return view('admin.orders-management');
     }
 
-    public function inventoryManagement()
+    public function itemManagement()
     {
-        return view('admin.inventory-management');
+        return view('admin.item-management');
+    }
+
+    public function salesReport()
+    {
+        return view('admin.sales-report');
     }
 }

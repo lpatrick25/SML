@@ -2,59 +2,56 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Inventory\StoreInventoryRequest;
-use App\Http\Requests\Inventory\UpdateInventoryRequest;
-use App\Http\Resources\Inventory\InventoryResource;
-use App\Http\Resources\Inventory\InventoryCollection;
-use App\Models\Inventory;
-use App\Services\InventoryServices;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Models\Item;
+use App\Models\ItemLog;
 
 class InventoryController extends Controller
 {
-    protected $inventoryService;
-
-    public function __construct(InventoryServices $inventoryService, Request $request)
+    public function index(Request $request)
     {
-        parent::__construct($request);
-        $this->inventoryService = $inventoryService;
-    }
+        // Get filter for low stock
+        $lowStockFilter = $request->input('low_stock', 'all');
+        $lowStockThreshold = 10; // Configurable low stock threshold
 
-    public function index(Request $request): InventoryCollection
-    {
-        $validated = $request->validate([
-            'item_name' => 'nullable|string|max:255',
-            'limit' => 'nullable|integer|min:1',
-            'page' => 'nullable|integer|min:1',
-        ]);
+        // Query items
+        $itemsQuery = Item::query();
+        if ($lowStockFilter === 'low') {
+            $itemsQuery->where('quantity', '<=', $lowStockThreshold);
+        }
+        $items = $itemsQuery->orderBy('item_name')->get();
 
-        $query = $this->inventoryService->getAllInventories($validated);
-        $inventories = $query->paginate($this->limit, ['*'], 'page', $this->page);
+        // Metrics
+        $totalItems = Item::count();
+        $lowStockItems = Item::where('quantity', '<=', $lowStockThreshold)->count();
 
-        return new InventoryCollection($inventories);
-    }
+        // Recent Item Logs (last 10)
+        $recentLogs = ItemLog::with(['item', 'staff'])
+            ->orderByDesc('log_date')
+            ->take(10)
+            ->get()
+            ->map(function ($log) {
+                return [
+                    'id' => $log->id,
+                    'item_name' => $log->item->item_name,
+                    'change_type' => $log->change_type,
+                    'quantity' => $log->quantity,
+                    'description' => $log->description ?? 'No description',
+                    'staff_name' => $log->staff ? trim($log->staff->first_name . ' ' .
+                        ($log->staff->middle_name ? $log->staff->middle_name . ' ' : '') .
+                        $log->staff->last_name . ' ' .
+                        ($log->staff->extension ? $log->staff->extension : '')) : 'N/A',
+                    'log_date' => $log->log_date->format('M d, Y H:i'),
+                ];
+            });
 
-    public function show(Inventory $inventory): JsonResponse
-    {
-        return $this->success(new InventoryResource($inventory));
-    }
-
-    public function store(StoreInventoryRequest $request): JsonResponse
-    {
-        $inventory = $this->inventoryService->create($request->validated());
-        return $this->success(new InventoryResource($inventory), 'Inventory item created', 201);
-    }
-
-    public function update(UpdateInventoryRequest $request, Inventory $inventory): JsonResponse
-    {
-        $inventory = $this->inventoryService->update($inventory->id, $request->validated());
-        return $this->success(new InventoryResource($inventory), 'Inventory item updated');
-    }
-
-    public function destroy(Inventory $inventory): JsonResponse
-    {
-        $inventory->delete();
-        return $this->success(null, 'Inventory item deleted');
+        return view('admin.inventory-report', compact(
+            'items',
+            'totalItems',
+            'lowStockItems',
+            'recentLogs',
+            'lowStockFilter',
+            'lowStockThreshold'
+        ));
     }
 }

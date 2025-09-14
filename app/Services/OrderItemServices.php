@@ -11,7 +11,7 @@ class OrderItemServices
     {
         return OrderItem::query()
             ->with(['order', 'service'])
-            ->when($validated['order_id'] ?? null, fn($q) => $q->where('order_id', $validated['order_id']))
+            ->when($validated['transaction_id'] ?? null, fn($q) => $q->where('transaction_id', $validated['transaction_id']))
             ->when($validated['service_id'] ?? null, fn($q) => $q->where('service_id', $validated['service_id']));
     }
 

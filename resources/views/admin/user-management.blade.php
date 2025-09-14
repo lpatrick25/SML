@@ -23,7 +23,7 @@
                         data-url="{{ route('users.index') }}" data-toolbar="#toolbar">
                         <thead>
                             <tr>
-                                <th data-field="id">ID</th>
+                                <th data-field="id">#</th>
                                 <th data-field="fullname">Fullname</th>
                                 <th data-field="phone_number">Phone Number</th>
                                 <th data-field="email">Email</th>
@@ -56,8 +56,8 @@
                     </div>
                 </div>
                 <div class="modal-footer text-right">
-                    <button class="btn btn-md btn-primary"><i class="fa fa-save"></i> Update</button>
-                    <button class="btn btn-md btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                    <button type="button" class="btn btn-md btn-primary"><i class="fa fa-save"></i> Update</button>
+                    <button type="button" class="btn btn-md btn-danger" data-bs-dismiss="modal"><i class="fa fa-times"></i> Close</button>
                 </div>
             </form>
         </div>
@@ -94,10 +94,10 @@
                 return '<span class="text-muted">No actions available</span>';
             }
             return `
-        <button class="btn btn-sm btn-primary me-1" onclick="changeData(${row.id})" title="Change Password">
+        <button type="button" class="btn btn-sm btn-primary me-1" onclick="changeData(${row.id})" title="Change Password">
             <i class="bi bi-key"></i>
         </button>
-        <button class="btn btn-sm btn-danger me-1" onclick="disableData(${row.id})" title="Disable Account">
+        <button type="button" class="btn btn-sm btn-danger me-1" onclick="disableData(${row.id})" title="Disable Account">
             <i class="bi bi-person-x"></i>
         </button>
     `;

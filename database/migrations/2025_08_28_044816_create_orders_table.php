@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constrained('customers');
             $table->foreignId('staff_id')->nullable()->constrained('users');
-            $table->date('order_date');
-            $table->enum('order_status', ['Pending', 'In Progress', 'Completed', 'Picked Up', 'Cancelled'])->default('Pending');
+            $table->date('transaction_date');
+            $table->enum('transaction_status', ['Pending', 'In Progress', 'Completed', 'Picked Up', 'Cancelled'])->default('Pending');
             $table->decimal('total_amount', 10, 2);
             $table->enum('payment_status', ['Unpaid', 'Paid', 'Partial'])->default('Unpaid');
             $table->timestamps();
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('transactions');
     }
 };

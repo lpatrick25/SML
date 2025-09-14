@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\InventoryLog;
+namespace App\Http\Requests\ItemLog;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreInventoryLogRequest extends FormRequest
+class StoreItemLogRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -15,7 +15,7 @@ class StoreInventoryLogRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'inventory_id' => ['required', Rule::exists('inventory', 'id')],
+            'item_id' => ['required', Rule::exists('item', 'id')],
             'change_type' => ['required', Rule::in(['In', 'Out'])],
             'quantity' => ['required', 'integer', 'min:1'],
             'description' => ['nullable', 'string'],
@@ -27,7 +27,7 @@ class StoreInventoryLogRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'inventory_id.exists' => 'The selected inventory item does not exist.',
+            'item_id.exists' => 'The selected item item does not exist.',
             'change_type.in' => 'The change type must be one of: In, Out.',
             'quantity.min' => 'The quantity must be at least 1.',
             'staff_id.exists' => 'The selected staff does not exist.',

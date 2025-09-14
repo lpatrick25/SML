@@ -10,7 +10,7 @@ class OrderItemResource extends Resource
     {
         return [
             'id' => $this->id,
-            'order_id' => $this->order_id,
+            'transaction_id' => $this->transaction_id,
             'service_id' => $this->service_id,
             'quantity' => $this->quantity,
             'subtotal' => $this->subtotal,
@@ -19,8 +19,8 @@ class OrderItemResource extends Resource
             'order' => $this->whenLoaded('order', fn() => [
                 'id' => $this->order->id,
                 'customer_id' => $this->order->customer_id,
-                'order_date' => $this->order->order_date->toDateString(),
-                'order_status' => $this->order->order_status,
+                'transaction_date' => $this->order->transaction_date->toDateString(),
+                'transaction_status' => $this->order->transaction_status,
             ]),
             'service' => $this->whenLoaded('service', fn() => [
                 'id' => $this->service->id,

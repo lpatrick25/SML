@@ -24,7 +24,7 @@ class OrderItemController extends Controller
     public function index(Request $request): OrderItemCollection
     {
         $validated = $request->validate([
-            'order_id' => 'nullable|exists:orders,id',
+            'transaction_id' => 'nullable|exists:orders,id',
             'service_id' => 'nullable|exists:services,id',
             'limit' => 'nullable|integer|min:1',
             'page' => 'nullable|integer|min:1',

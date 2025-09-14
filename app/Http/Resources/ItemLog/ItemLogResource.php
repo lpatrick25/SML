@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Resources\InventoryLog;
+namespace App\Http\Resources\ItemLog;
 
 use App\Http\Resources\Resource;
 
-class InventoryLogResource extends Resource
+class ItemLogResource extends Resource
 {
     public function toArray($request): array
     {
         return [
             'id' => $this->id,
-            'inventory_id' => $this->inventory_id,
+            'item_id' => $this->item_id,
             'change_type' => $this->change_type,
             'quantity' => $this->quantity,
             'description' => $this->description,
@@ -18,10 +18,10 @@ class InventoryLogResource extends Resource
             'log_date' => $this->log_date->toDateTimeString(),
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
-            'inventory' => $this->whenLoaded('inventory', fn() => [
-                'id' => $this->inventory->id,
-                'item_name' => $this->inventory->item_name,
-                'unit' => $this->inventory->unit,
+            'item' => $this->whenLoaded('item', fn() => [
+                'id' => $this->item->id,
+                'item_name' => $this->item->item_name,
+                'unit' => $this->item->unit,
             ]),
             'staff' => $this->whenLoaded('staff', fn() => [
                 'id' => $this->staff->id,

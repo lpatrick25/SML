@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Resources\InventoryLog;
+namespace App\Http\Resources\Item;
 
 use App\Http\Resources\PaginatedResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\JsonResponse;
 
-class InventoryLogCollection extends PaginatedResource
+class ItemCollection extends PaginatedResource
 {
     public function data($collection): AnonymousResourceCollection
     {
-        return InventoryLogResource::collection($collection);
+        return ItemResource::collection($collection);
     }
 
     public function toResponse($request): JsonResponse

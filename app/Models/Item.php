@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Inventory extends Model
+class Item extends Model
 {
-    protected $table = 'inventories';
+    protected $table = 'items';
 
     protected $fillable = [
         'item_name',
@@ -15,8 +15,8 @@ class Inventory extends Model
         'unit',
     ];
 
-    public function inventoryLogs()
+    public function itemLogs()
     {
-        return $this->hasMany(InventoryLog::class, 'inventory_id');
+        return $this->hasMany(ItemLog::class, 'item_id');
     }
 }

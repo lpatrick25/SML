@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained('orders');
+            $table->foreignId('transaction_id')->constrained('transactions');
             $table->decimal('amount', 10, 2);
             $table->timestamp('payment_date')->useCurrent();
             $table->enum('payment_method', ['Cash', 'GCash', 'PayMaya', 'Card', 'Other'])->default('Cash');

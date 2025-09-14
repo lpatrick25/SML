@@ -6,8 +6,8 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\InventoryController;
-use App\Http\Controllers\InventoryLogController;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ItemLogController;
 use Illuminate\Support\Facades\Route;
 
 // Route::prefix('api')->group(function () {
@@ -17,6 +17,6 @@ use Illuminate\Support\Facades\Route;
 //     Route::resource('orders', OrderController::class);
 //     Route::resource('order-items', OrderItemController::class);
 //     Route::resource('payments', PaymentController::class);
-//     Route::resource('inventories', InventoryController::class);
-//     Route::resource('inventory-logs', InventoryLogController::class);
+//     Route::resource('items', ItemController::class);
+//     Route::resource('item-logs', ItemLogController::class);
 // });

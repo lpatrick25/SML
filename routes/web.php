@@ -5,12 +5,14 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\InventoryController;
-use App\Http\Controllers\InventoryLogController;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ItemLogController;
+use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,7 +34,7 @@ Route::get('/', function () {
 Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::prefix('admin')->group(function() {
+Route::prefix('admin')->middleware('auth')->group(function() {
     Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     // User Component
@@ -43,10 +45,16 @@ Route::prefix('admin')->group(function() {
     Route::get('customers-management', [AdminController::class, 'customersManagement'])->name('admin.customersManagement');
     Route::get('services-management', [AdminController::class, 'servicesManagement'])->name('admin.servicesManagement');
     Route::get('orders-management', [AdminController::class, 'ordersManagement'])->name('admin.ordersManagement');
-    Route::get('inventory-management', [AdminController::class, 'inventoryManagement'])->name('admin.inventoryManagement');
+    Route::get('item-management', [AdminController::class, 'itemManagement'])->name('admin.itemManagement');
+
+    // Report Components
+    Route::get('sales-report', [SalesReportController::class, 'index'])->name('admin.salesReport');
+    Route::get('/inventory', [InventoryController::class, 'index'])->name('admin.inventoryReport');
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/sales-report', [SalesReportController::class, 'index'])->name('sales-report.index');
+Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
 
 Route::resource('users', UserController::class)->names([
     'index' => 'users.index',
@@ -98,6 +106,7 @@ Route::resource('transactions', TransactionController::class)->names([
     'update' => 'transactions.update',
     'destroy' => 'transactions.destroy',
 ]);
+Route::patch('/transactions/{transaction}/status', [TransactionController::class, 'changeStatus']);
 
 Route::resource('payments', PaymentController::class)->names([
     'index' => 'payments.index',
@@ -107,18 +116,18 @@ Route::resource('payments', PaymentController::class)->names([
     'destroy' => 'payments.destroy',
 ]);
 
-Route::resource('inventories', InventoryController::class)->names([
-    'index' => 'inventories.index',
-    'show' => 'inventories.show',
-    'store' => 'inventories.store',
-    'update' => 'inventories.update',
-    'destroy' => 'inventories.destroy',
+Route::resource('items', ItemController::class)->names([
+    'index' => 'items.index',
+    'show' => 'items.show',
+    'store' => 'items.store',
+    'update' => 'items.update',
+    'destroy' => 'items.destroy',
 ]);
 
-Route::resource('inventory-logs', InventoryLogController::class)->names([
-    'index' => 'inventory-logs.index',
-    'show' => 'inventory-logs.show',
-    'store' => 'inventory-logs.store',
-    'update' => 'inventory-logs.update',
-    'destroy' => 'inventory-logs.destroy',
+Route::resource('item-logs', ItemLogController::class)->names([
+    'index' => 'item-logs.index',
+    'show' => 'item-logs.show',
+    'store' => 'item-logs.store',
+    'update' => 'item-logs.update',
+    'destroy' => 'item-logs.destroy',
 ]);

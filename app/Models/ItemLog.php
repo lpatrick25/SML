@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class InventoryLog extends Model
+class ItemLog extends Model
 {
     protected $fillable = [
-        'inventory_id',
+        'item_id',
+        'transaction_item_id',
         'change_type',
         'quantity',
         'description',
@@ -20,9 +21,9 @@ class InventoryLog extends Model
         'change_type' => 'string',
     ];
 
-    public function inventory()
+    public function item()
     {
-        return $this->belongsTo(Inventory::class, 'inventory_id');
+        return $this->belongsTo(Item::class, 'item_id');
     }
 
     public function staff()

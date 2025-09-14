@@ -33,11 +33,11 @@
                         data-url="{{ route('users.index') }}" data-toolbar="#toolbar">
                         <thead>
                             <tr>
-                                <th data-field="id">ID</th>
+                                <th data-field="id">#</th>
                                 <th data-field="fullname">Fullname</th>
                                 <th data-field="phone_number">Phone Number</th>
                                 <th data-field="email">Email</th>
-                                <th data-field="address">Address</th>
+                                <th data-field="address" data-formatter="getAddressFormatter">Address</th>
                                 <th data-field="role">Role</th>
                                 <th data-field="status" data-formatter="getStatusFormatter">Status</th>
                                 <th data-field="action" data-formatter="getActionFormatter">Action</th>
@@ -83,7 +83,71 @@
                         </div>
                         <div class="col-lg-6">
                             <label for="address">Address: <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="address" name="address" required>
+                            <select name="address" id="address" class="form-control">
+                                <option value="Alangilan">Brgy Alangilan, Abuyog, Leyte</option>
+                                <option value="Anibongan">Brgy Anibongan, Abuyog, Leyte</option>
+                                <option value="Bagacay">Brgy Bagacay, Abuyog, Leyte</option>
+                                <option value="Bahay">Brgy Bahay, Abuyog, Leyte</option>
+                                <option value="Balinsasayao">Brgy Balinsasayao, Abuyog, Leyte</option>
+                                <option value="Balocawe">Brgy Balocawe, Abuyog, Leyte</option>
+                                <option value="Balocawehay">Brgy Balocawehay, Abuyog, Leyte</option>
+                                <option value="Barayong">Brgy Barayong, Abuyog, Leyte</option>
+                                <option value="Bayabas">Brgy Bayabas, Abuyog, Leyte</option>
+                                <option value="Bito">Brgy Bito, Abuyog, Leyte</option>
+                                <option value="Buaya">Brgy Buaya, Abuyog, Leyte</option>
+                                <option value="Buenavista">Brgy Buenavista, Abuyog, Leyte</option>
+                                <option value="Bulak">Brgy Bulak, Abuyog, Leyte</option>
+                                <option value="Bunga">Brgy Bunga, Abuyog, Leyte</option>
+                                <option value="Buntay">Brgy Buntay, Abuyog, Leyte</option>
+                                <option value="Burubud-an">Brgy Burubud-an, Abuyog, Leyte</option>
+                                <option value="Cadac-an">Brgy Cadac-an, Abuyog, Leyte</option>
+                                <option value="Cagbolo">Brgy Cagbolo, Abuyog, Leyte</option>
+                                <option value="Can-aporong">Brgy Can-aporong, Abuyog, Leyte</option>
+                                <option value="Can-uguib">Brgy Can-uguib, Abuyog, Leyte</option>
+                                <option value="Canmarating">Brgy Canmarating, Abuyog, Leyte</option>
+                                <option value="Capilian">Brgy Capilian, Abuyog, Leyte</option>
+                                <option value="Combis">Brgy Combis, Abuyog, Leyte</option>
+                                <option value="Dingle">Brgy Dingle, Abuyog, Leyte</option>
+                                <option value="Guintagbucan">Brgy Guintagbucan, Abuyog, Leyte</option>
+                                <option value="Hampipila">Brgy Hampipila, Abuyog, Leyte</option>
+                                <option value="Katipunan">Brgy Katipunan, Abuyog, Leyte</option>
+                                <option value="Kikilo">Brgy Kikilo, Abuyog, Leyte</option>
+                                <option value="Laray">Brgy Laray, Abuyog, Leyte</option>
+                                <option value="Lawa-an">Brgy Lawa-an, Abuyog, Leyte</option>
+                                <option value="Libertad">Brgy Libertad, Abuyog, Leyte</option>
+                                <option value="Loyonsawang">Brgy Loyonsawang, Abuyog, Leyte</option>
+                                <option value="Mag-atubang">Brgy Mag-atubang, Abuyog, Leyte</option>
+                                <option value="Mahagna">Brgy Mahagna, Abuyog, Leyte</option>
+                                <option value="Mahayahay">Brgy Mahayahay, Abuyog, Leyte</option>
+                                <option value="Maitum">Brgy Maitum, Abuyog, Leyte</option>
+                                <option value="Malaguicay">Brgy Malaguicay, Abuyog, Leyte</option>
+                                <option value="Matagnao">Brgy Matagnao, Abuyog, Leyte</option>
+                                <option value="Nalibunan">Brgy Nalibunan, Abuyog, Leyte</option>
+                                <option value="Nebga">Brgy Nebga, Abuyog, Leyte</option>
+                                <option value="New Taligue">Brgy New Taligue, Abuyog, Leyte</option>
+                                <option value="Odiongan">Brgy Odiongan, Abuyog, Leyte</option>
+                                <option value="Old Taligue">Brgy Old Taligue, Abuyog, Leyte</option>
+                                <option value="Pagsang-an">Brgy Pagsang-an, Abuyog, Leyte</option>
+                                <option value="Paguite">Brgy Paguite, Abuyog, Leyte</option>
+                                <option value="Parasanon">Brgy Parasanon, Abuyog, Leyte</option>
+                                <option value="Picas Sur">Brgy Picas Sur, Abuyog, Leyte</option>
+                                <option value="Pilar">Brgy Pilar, Abuyog, Leyte</option>
+                                <option value="Pinamanagan">Brgy Pinamanagan, Abuyog, Leyte</option>
+                                <option value="Salvacion">Brgy Salvacion, Abuyog, Leyte</option>
+                                <option value="San Francisco">Brgy San Francisco, Abuyog, Leyte</option>
+                                <option value="San Isidro">Brgy San Isidro, Abuyog, Leyte</option>
+                                <option value="San Roque">Brgy San Roque, Abuyog, Leyte</option>
+                                <option value="Santa Fe">Brgy Santa Fe, Abuyog, Leyte</option>
+                                <option value="Santa Lucia">Brgy Santa Lucia, Abuyog, Leyte</option>
+                                <option value="Santo Niño">Brgy Santo Niño, Abuyog, Leyte</option>
+                                <option value="Tabigue">Brgy Tabigue, Abuyog, Leyte</option>
+                                <option value="Tadoc">Brgy Tadoc, Abuyog, Leyte</option>
+                                <option value="Tib-o">Brgy Tib-o, Abuyog, Leyte</option>
+                                <option value="Tinalian">Brgy Tinalian, Abuyog, Leyte</option>
+                                <option value="Tinocolan">Brgy Tinocolan, Abuyog, Leyte</option>
+                                <option value="Tuy-a">Brgy Tuy-a, Abuyog, Leyte</option>
+                                <option value="Victory">Brgy Victory, Abuyog, Leyte</option>
+                            </select>
                         </div>
                         <div class="col-lg-6">
                             <label for="role">Role: <span class="text-danger">*</span></label>
@@ -95,18 +159,30 @@
                         </div>
                         <div class="col-lg-6">
                             <label for="password">Password: <span class="text-danger">*</span></label>
-                            <input type="password" class="form-control" id="password" name="password">
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="add_password" name="password">
+                                <button class="btn btn-outline-secondary toggle-password" type="button"
+                                    data-target="add_password">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="col-lg-6">
                             <label for="password_confirmation">Confirm Password: <span
                                     class="text-danger">*</span></label>
-                            <input type="password" class="form-control" id="password_confirmation"
-                                name="password_confirmation">
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="add_password_confirmation"
+                                    name="password_confirmation">
+                                <button class="btn btn-outline-secondary toggle-password" type="button"
+                                    data-target="add_password_confirmation">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer text-right">
-                    <button type="submit" class="btn btn-md btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-md btn-primary">Save</button>
                     <button type="button" class="btn btn-md btn-danger" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </form>
@@ -146,7 +222,71 @@
                         </div>
                         <div class="col-lg-6">
                             <label for="address">Address: <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="address" name="address" required>
+                            <select name="address" id="address" class="form-control">
+                                <option value="Alangilan">Brgy Alangilan, Abuyog, Leyte</option>
+                                <option value="Anibongan">Brgy Anibongan, Abuyog, Leyte</option>
+                                <option value="Bagacay">Brgy Bagacay, Abuyog, Leyte</option>
+                                <option value="Bahay">Brgy Bahay, Abuyog, Leyte</option>
+                                <option value="Balinsasayao">Brgy Balinsasayao, Abuyog, Leyte</option>
+                                <option value="Balocawe">Brgy Balocawe, Abuyog, Leyte</option>
+                                <option value="Balocawehay">Brgy Balocawehay, Abuyog, Leyte</option>
+                                <option value="Barayong">Brgy Barayong, Abuyog, Leyte</option>
+                                <option value="Bayabas">Brgy Bayabas, Abuyog, Leyte</option>
+                                <option value="Bito">Brgy Bito, Abuyog, Leyte</option>
+                                <option value="Buaya">Brgy Buaya, Abuyog, Leyte</option>
+                                <option value="Buenavista">Brgy Buenavista, Abuyog, Leyte</option>
+                                <option value="Bulak">Brgy Bulak, Abuyog, Leyte</option>
+                                <option value="Bunga">Brgy Bunga, Abuyog, Leyte</option>
+                                <option value="Buntay">Brgy Buntay, Abuyog, Leyte</option>
+                                <option value="Burubud-an">Brgy Burubud-an, Abuyog, Leyte</option>
+                                <option value="Cadac-an">Brgy Cadac-an, Abuyog, Leyte</option>
+                                <option value="Cagbolo">Brgy Cagbolo, Abuyog, Leyte</option>
+                                <option value="Can-aporong">Brgy Can-aporong, Abuyog, Leyte</option>
+                                <option value="Can-uguib">Brgy Can-uguib, Abuyog, Leyte</option>
+                                <option value="Canmarating">Brgy Canmarating, Abuyog, Leyte</option>
+                                <option value="Capilian">Brgy Capilian, Abuyog, Leyte</option>
+                                <option value="Combis">Brgy Combis, Abuyog, Leyte</option>
+                                <option value="Dingle">Brgy Dingle, Abuyog, Leyte</option>
+                                <option value="Guintagbucan">Brgy Guintagbucan, Abuyog, Leyte</option>
+                                <option value="Hampipila">Brgy Hampipila, Abuyog, Leyte</option>
+                                <option value="Katipunan">Brgy Katipunan, Abuyog, Leyte</option>
+                                <option value="Kikilo">Brgy Kikilo, Abuyog, Leyte</option>
+                                <option value="Laray">Brgy Laray, Abuyog, Leyte</option>
+                                <option value="Lawa-an">Brgy Lawa-an, Abuyog, Leyte</option>
+                                <option value="Libertad">Brgy Libertad, Abuyog, Leyte</option>
+                                <option value="Loyonsawang">Brgy Loyonsawang, Abuyog, Leyte</option>
+                                <option value="Mag-atubang">Brgy Mag-atubang, Abuyog, Leyte</option>
+                                <option value="Mahagna">Brgy Mahagna, Abuyog, Leyte</option>
+                                <option value="Mahayahay">Brgy Mahayahay, Abuyog, Leyte</option>
+                                <option value="Maitum">Brgy Maitum, Abuyog, Leyte</option>
+                                <option value="Malaguicay">Brgy Malaguicay, Abuyog, Leyte</option>
+                                <option value="Matagnao">Brgy Matagnao, Abuyog, Leyte</option>
+                                <option value="Nalibunan">Brgy Nalibunan, Abuyog, Leyte</option>
+                                <option value="Nebga">Brgy Nebga, Abuyog, Leyte</option>
+                                <option value="New Taligue">Brgy New Taligue, Abuyog, Leyte</option>
+                                <option value="Odiongan">Brgy Odiongan, Abuyog, Leyte</option>
+                                <option value="Old Taligue">Brgy Old Taligue, Abuyog, Leyte</option>
+                                <option value="Pagsang-an">Brgy Pagsang-an, Abuyog, Leyte</option>
+                                <option value="Paguite">Brgy Paguite, Abuyog, Leyte</option>
+                                <option value="Parasanon">Brgy Parasanon, Abuyog, Leyte</option>
+                                <option value="Picas Sur">Brgy Picas Sur, Abuyog, Leyte</option>
+                                <option value="Pilar">Brgy Pilar, Abuyog, Leyte</option>
+                                <option value="Pinamanagan">Brgy Pinamanagan, Abuyog, Leyte</option>
+                                <option value="Salvacion">Brgy Salvacion, Abuyog, Leyte</option>
+                                <option value="San Francisco">Brgy San Francisco, Abuyog, Leyte</option>
+                                <option value="San Isidro">Brgy San Isidro, Abuyog, Leyte</option>
+                                <option value="San Roque">Brgy San Roque, Abuyog, Leyte</option>
+                                <option value="Santa Fe">Brgy Santa Fe, Abuyog, Leyte</option>
+                                <option value="Santa Lucia">Brgy Santa Lucia, Abuyog, Leyte</option>
+                                <option value="Santo Niño">Brgy Santo Niño, Abuyog, Leyte</option>
+                                <option value="Tabigue">Brgy Tabigue, Abuyog, Leyte</option>
+                                <option value="Tadoc">Brgy Tadoc, Abuyog, Leyte</option>
+                                <option value="Tib-o">Brgy Tib-o, Abuyog, Leyte</option>
+                                <option value="Tinalian">Brgy Tinalian, Abuyog, Leyte</option>
+                                <option value="Tinocolan">Brgy Tinocolan, Abuyog, Leyte</option>
+                                <option value="Tuy-a">Brgy Tuy-a, Abuyog, Leyte</option>
+                                <option value="Victory">Brgy Victory, Abuyog, Leyte</option>
+                            </select>
                         </div>
                         <div class="col-lg-6">
                             <label for="role">Role: <span class="text-danger">*</span></label>
@@ -156,11 +296,59 @@
                                 <option value="Owner">Owner</option>
                             </select>
                         </div>
+                        <div class="col-lg-6">
+                            <label for="password">Password: <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="update_password" name="password">
+                                <button class="btn btn-outline-secondary toggle-password" type="button"
+                                    data-target="update_password">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="password_confirmation">Confirm Password: <span
+                                    class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="update_password_confirmation"
+                                    name="password_confirmation">
+                                <button class="btn btn-outline-secondary toggle-password" type="button"
+                                    data-target="update_password_confirmation">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer text-right">
-                    <button class="btn btn-md btn-primary">Submit</button>
-                    <button class="btn btn-md btn-danger" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-md btn-primary">Save</button>
+                    <button type="button" class="btn btn-md btn-danger" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="changePasswordModal">
+        <div class="modal-dialog">
+            <form class="modal-content" id="changePasswordForm">
+                <div class="modal-header">
+                    <h3 class="modal-title">Change Password</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="password">Password <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password_confirmation">Confirm Password <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" id="password_confirmation"
+                            name="password_confirmation" required>
+                    </div>
+                </div>
+                <div class="modal-footer text-right">
+                    <button type="button" class="btn btn-md btn-primary"><i class="fa fa-save"></i> Save</button>
+                    <button type="button" class="btn btn-md btn-danger" data-bs-dismiss="modal"><i
+                            class="fa fa-times"></i> Close</button>
                 </div>
             </form>
         </div>
@@ -171,6 +359,16 @@
     <script type="text/javascript">
         let dataId;
 
+        function getAddressFormatter(value, row) {
+            // Handle missing row or invalid ID
+            if (!row || row.id === undefined || row.id === null) {
+                return `<span class="badge bg-secondary text-light fw-semibold px-3 py-2">No actions</span>`;
+            }
+
+            return `<span class="badge rounded-pill bg-info text-white fw-semibold px-3 py-2 shadow-sm">
+                <i class="bi bi-geo-alt-fill me-1"></i>Brgy. ${value}, Abuyog, Leyte
+            </span>`;
+        }
 
         function getStatusFormatter(value, row) {
             // Handle missing row or invalid ID
@@ -182,14 +380,14 @@
             const status = (value || '').toString().trim().toLowerCase();
 
             if (status === 'active') {
-                return `<span class="badge rounded-pill bg-success text-white fw-semibold px-3 py-2 shadow-sm">
+                return `<button class="badge rounded-pill bg-success text-white fw-semibold px-3 py-2 shadow-sm" onclick="statusData(${row.id})" title="Disable Account">
                     <i class="bi bi-check-circle-fill me-1"></i> ${value}
-                </span>`;
+                </button>`;
             }
 
-            return `<span class="badge rounded-pill bg-danger text-white fw-semibold px-3 py-2 shadow-sm">
+            return `<button class="badge rounded-pill bg-danger text-white fw-semibold px-3 py-2 shadow-sm" onclick="statusData(${row.id})" title="Enable Account">
                 <i class="bi bi-x-circle-fill me-1"></i> ${value}
-            </span>`;
+            </button>`;
         }
 
         function getActionFormatter(value, row) {
@@ -198,10 +396,10 @@
                 return '<span class="text-muted">No actions available</span>';
             }
             return `
-                <button class="btn btn-sm btn-primary me-1" onclick="editData(${row.id})" title="Edit">
+                <button type="button" class="btn btn-sm btn-primary me-1" onclick="editData(${row.id})" title="Edit">
                     <i class="bi bi-pencil"></i>
                 </button>
-                <button class="btn btn-sm btn-danger me-1" onclick="deleteData(${row.id})" title="Delete">
+                <button type="button" class="btn btn-sm btn-danger me-1" onclick="deleteData(${row.id})" title="Delete">
                     <i class="bi bi-trash"></i>
                 </button>
             `;
@@ -231,6 +429,46 @@
                 },
                 error: function(xhr) {
                     toastr.error('Error fetching user data: ' + (xhr.responseText || 'Unknown error'));
+                }
+            });
+        }
+
+        function changeData(id) {
+            $.ajax({
+                method: 'GET',
+                url: `/users/${id}`,
+                dataType: 'JSON',
+                cache: false,
+                success: function(response) {
+                    var data = response.content;
+                    dataId = data.id;
+                    $('#changePasswordModal').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    }).modal('show');
+                },
+                error: function(xhr) {
+                    toastr.error('Error fetching user data: ' + (xhr.responseText || 'Unknown error'));
+                }
+            });
+        }
+
+        function statusData(id) {
+            $.ajax({
+                method: 'PUT',
+                url: `/users/${id}/changeStatus`,
+                dataType: 'JSON',
+                cache: false,
+                success: function(response) {
+                    $('#table').bootstrapTable('refresh');
+                    toastr.success(response.message);
+                },
+                error: function(xhr) {
+                    let message = 'Error deleting user.';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        message = xhr.responseJSON.message;
+                    }
+                    toastr.error(message);
                 }
             });
         }
@@ -298,6 +536,20 @@
                     backdrop: 'static',
                     keyboard: false
                 }).modal('show');
+            });
+
+            $(document).on('click', '.toggle-password', function() {
+                var targetId = $(this).data('target');
+                var $input = $('#' + targetId);
+                var $icon = $(this).find('i');
+
+                if ($input.attr('type') === 'password') {
+                    $input.attr('type', 'text');
+                    $icon.removeClass('bi-eye').addClass('bi-eye-slash');
+                } else {
+                    $input.attr('type', 'password');
+                    $icon.removeClass('bi-eye-slash').addClass('bi-eye');
+                }
             });
 
             $('#addForm').submit(function(event) {
@@ -372,6 +624,51 @@
                                     if (messages.length > 0) {
                                         const input = $(
                                             `#updateForm [name="${field}"]`
+                                        );
+                                        input.addClass('is-invalid');
+                                        input.closest('.form-group').find(
+                                            'span.invalid-feedback').remove();
+                                        const error = $(
+                                            '<span class="invalid-feedback"></span>'
+                                        ).text(messages[0]);
+                                        input.closest('.form-group').append(error);
+                                    }
+                                }
+                            }
+                        } catch (e) {
+                            toastr.error('Error parsing server response.');
+                        }
+                    }
+                });
+            });
+
+            $('#changePasswordForm').submit(function(event) {
+                event.preventDefault();
+
+                $.ajax({
+                    method: 'PUT',
+                    url: `/users/${dataId}/changePassword`,
+                    data: $('#changePasswordForm').serialize(),
+                    dataType: 'JSON',
+                    cache: false,
+                    success: function(response) {
+                        $('#changePasswordModal').modal('hide');
+                        $('#table').bootstrapTable('refresh');
+                        $('#addForm').trigger('reset');
+                        toastr.success(response.message);
+                    },
+                    error: function(xhr) {
+                        let response;
+                        try {
+                            response = JSON.parse(xhr.responseText);
+                            toastr.error('Error updating user: ' + (response
+                                .message || 'An unknown error occurred.'));
+                            if (response.errors) {
+                                for (const field in response.errors) {
+                                    const messages = response.errors[field];
+                                    if (messages.length > 0) {
+                                        const input = $(
+                                            `#changePasswordForm [name="${field}"]`
                                         );
                                         input.addClass('is-invalid');
                                         input.closest('.form-group').find(
