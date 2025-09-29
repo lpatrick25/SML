@@ -167,18 +167,29 @@
         }
 
         function deleteData(id) {
-            if (!confirm('Are you sure you want to delete this service?')) return;
-            $.ajax({
-                method: 'DELETE',
-                url: `{{ route('services.index') }}/${id}`,
-                dataType: 'json',
-                cache: false,
-                success: function(response) {
-                    $('#table').bootstrapTable('refresh');
-                    toastr.success(response.message || 'Service deleted successfully');
-                },
-                error: function(xhr) {
-                    toastr.error(`Error deleting service: ${xhr.responseJSON?.message || 'Unknown error'}`);
+            swal.fire({
+                title: "Confirm Deletion",
+                text: "Are you sure you want to delete this service? This action cannot be undone.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        method: 'DELETE',
+                        url: `{{ route('services.index') }}/${id}`,
+                        dataType: 'json',
+                        cache: false,
+                        success: function(response) {
+                            $('#table').bootstrapTable('refresh');
+                            toastr.success(response.message || 'Service deleted successfully');
+                        },
+                        error: function(xhr) {
+                            toastr.error(`Error deleting service: ${xhr.responseJSON?.message || 'Unknown error'}`);
+                        }
+                    });
                 }
             });
         }
@@ -226,34 +237,45 @@
                 event.preventDefault();
                 $(this).find('.is-invalid').removeClass('is-invalid');
                 $(this).find('.invalid-feedback').remove();
-
-                $.ajax({
-                    method: 'POST',
-                    url: '{{ route('services.store') }}',
-                    data: $(this).serialize(),
-                    dataType: 'json',
-                    cache: false,
-                    success: function(response) {
-                        $('#addModal').modal('hide');
-                        $('#table').bootstrapTable('refresh');
-                        $('#addForm').trigger('reset');
-                        toastr.success(response.message || 'Service added successfully');
-                    },
-                    error: function(xhr) {
-                        const response = xhr.responseJSON || {};
-                        toastr.error(
-                            `Error adding service: ${response.message || 'Unknown error'}`);
-                        if (response.errors) {
-                            for (const [field, messages] of Object.entries(response.errors)) {
-                                const input = $(`#addForm [name="${field}"]`);
-                                if (input.length) {
-                                    input.addClass('is-invalid');
-                                    const error = $('<span class="invalid-feedback"></span>')
-                                        .text(messages[0]);
-                                    input.closest('.form-group').append(error);
+                swal.fire({
+                    title: "Confirm Creation",
+                    text: "Are you sure you want to add this new service?",
+                    icon: "info",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, add it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            method: 'POST',
+                            url: '{{ route('services.store') }}',
+                            data: $(this).serialize(),
+                            dataType: 'json',
+                            cache: false,
+                            success: function(response) {
+                                $('#addModal').modal('hide');
+                                $('#table').bootstrapTable('refresh');
+                                $('#addForm').trigger('reset');
+                                toastr.success(response.message || 'Service added successfully');
+                            },
+                            error: function(xhr) {
+                                const response = xhr.responseJSON || {};
+                                toastr.error(
+                                    `Error adding service: ${response.message || 'Unknown error'}`);
+                                if (response.errors) {
+                                    for (const [field, messages] of Object.entries(response.errors)) {
+                                        const input = $(`#addForm [name="${field}"]`);
+                                        if (input.length) {
+                                            input.addClass('is-invalid');
+                                            const error = $('<span class="invalid-feedback"></span>')
+                                                .text(messages[0]);
+                                            input.closest('.form-group').append(error);
+                                        }
+                                    }
                                 }
                             }
-                        }
+                        });
                     }
                 });
             });
@@ -262,35 +284,46 @@
                 event.preventDefault();
                 $(this).find('.is-invalid').removeClass('is-invalid');
                 $(this).find('.invalid-feedback').remove();
-
-                $.ajax({
-                    method: 'PUT',
-                    url: `{{ route('services.index') }}/${dataId}`,
-                    data: $(this).serialize(),
-                    dataType: 'json',
-                    cache: false,
-                    success: function(response) {
-                        $('#updateModal').modal('hide');
-                        $('#table').bootstrapTable('refresh');
-                        $('#updateForm').trigger('reset');
-                        toastr.success(response.message || 'Service updated successfully');
-                    },
-                    error: function(xhr) {
-                        const response = xhr.responseJSON || {};
-                        toastr.error(
-                            `Error updating service: ${response.message || 'Unknown error'}`
-                            );
-                        if (response.errors) {
-                            for (const [field, messages] of Object.entries(response.errors)) {
-                                const input = $(`#updateForm [name="${field}"]`);
-                                if (input.length) {
-                                    input.addClass('is-invalid');
-                                    const error = $('<span class="invalid-feedback"></span>')
-                                        .text(messages[0]);
-                                    input.closest('.form-group').append(error);
+                swal.fire({
+                    title: "Confirm Update",
+                    text: "Are you sure you want to update this service?",
+                    icon: "info",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, update it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            method: 'PUT',
+                            url: `{{ route('services.index') }}/${dataId}`,
+                            data: $(this).serialize(),
+                            dataType: 'json',
+                            cache: false,
+                            success: function(response) {
+                                $('#updateModal').modal('hide');
+                                $('#table').bootstrapTable('refresh');
+                                $('#updateForm').trigger('reset');
+                                toastr.success(response.message || 'Service updated successfully');
+                            },
+                            error: function(xhr) {
+                                const response = xhr.responseJSON || {};
+                                toastr.error(
+                                    `Error updating service: ${response.message || 'Unknown error'}`
+                                    );
+                                if (response.errors) {
+                                    for (const [field, messages] of Object.entries(response.errors)) {
+                                        const input = $(`#updateForm [name="${field}"]`);
+                                        if (input.length) {
+                                            input.addClass('is-invalid');
+                                            const error = $('<span class="invalid-feedback"></span>')
+                                                .text(messages[0]);
+                                            input.closest('.form-group').append(error);
+                                        }
+                                    }
                                 }
                             }
-                        }
+                        });
                     }
                 });
             });

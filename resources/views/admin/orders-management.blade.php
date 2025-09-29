@@ -31,6 +31,7 @@
                         data-show-columns="true" data-show-refresh="true" data-show-toggle="true" data-show-export="true"
                         data-filter-control="true" data-sticky-header="true" data-show-jump-to="true"
                         data-url="{{ route('transactions.index') }}" data-toolbar="#toolbar">
+
                         <thead>
                             <tr>
                                 <th data-field="id">#</th>
@@ -40,6 +41,10 @@
                                 <th data-field="transaction_status" data-formatter="statusFormatter">Transaction Status</th>
                                 <th data-field="total_amount" data-formatter="priceFormatter">Total Amount</th>
                                 <th data-field="payment_status" data-formatter="paymentStatusFormatter">Payment Status</th>
+
+                                <!-- 👇 New column for Services -->
+                                <th data-field="transaction_items" data-formatter="servicesFormatter">Services</th>
+
                                 <th data-field="action" data-formatter="getActionFormatter">Action</th>
                             </tr>
                         </thead>
@@ -275,6 +280,17 @@
             return value ? `₱${parseFloat(value).toFixed(2)}` : 'N/A';
         }
 
+        function servicesFormatter(value, row) {
+            if (!row.transaction_items || row.transaction_items.length === 0) {
+                return "-";
+            }
+
+            return row.transaction_items.map(item => {
+                let service = item.service;
+                return `${service.name} (${service.kilograms}kg)`;
+            }).join("<br>");
+        }
+
         function statusFormatter(value) {
             const status = (value || '').toString().trim().toLowerCase();
             const colors = {
@@ -301,6 +317,7 @@
             if (!row || !row.id) {
                 return '<span class="text-muted">No actions</span>';
             }
+
             const status = (row.transaction_status || '').toString().trim();
             const colors = {
                 'Pending': 'bg-warning',
@@ -310,7 +327,7 @@
                 'Cancelled': 'bg-danger'
             };
 
-            var buttonStatus = '';
+            let buttonStatus = '';
 
             if (status === 'Pending') {
                 buttonStatus = `
@@ -335,19 +352,35 @@
                     data-id="${row.id}"
                     data-status="Picked Up">Picked Up</button>
         `;
-            } else {
-                buttonStatus =
-                    ``;
             }
-            return `
-                <button type="button" class="btn btn-sm btn-info me-1" onclick="viewData(${row.id})" title="View">
-                    <i class="bi bi-eye"></i>
-                </button>
-                <button type="button" class="btn btn-sm btn-primary me-1" onclick="editData(${row.id})" title="Edit">
-                    <i class="bi bi-pencil"></i>
-                </button>
-                ${buttonStatus}
-            `;
+
+            // Return buttons based on status
+            if (status === 'Pending') {
+                return `
+            <button type="button" class="btn btn-sm btn-info me-1" onclick="viewData(${row.id})" title="View">
+                <i class="bi bi-eye"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-primary me-1" onclick="editData(${row.id})" title="Edit">
+                <i class="bi bi-pencil"></i>
+            </button>
+            ${buttonStatus}
+        `;
+            } else if (status === 'In Progress' || status === 'Completed') {
+                return `
+            <button type="button" class="btn btn-sm btn-info me-1" onclick="viewData(${row.id})" title="View">
+                <i class="bi bi-eye"></i>
+            </button>
+            ${buttonStatus}
+        `;
+            } else if (status === 'Picked Up' || status === 'Cancelled') {
+                return `
+            <button type="button" class="btn btn-sm btn-info me-1" onclick="viewData(${row.id})" title="View">
+                <i class="bi bi-eye"></i>
+            </button>
+        `;
+            }
+
+            return '<span class="text-muted">No actions</span>';
         }
 
         document.addEventListener('click', function(e) {
@@ -581,18 +614,31 @@
         }
 
         function deleteData(id) {
-            if (!confirm('Are you sure you want to delete this order?')) return;
-            $.ajax({
-                method: 'DELETE',
-                url: `/transactions/${id}`,
-                dataType: 'json',
-                cache: false,
-                success: function(response) {
-                    $('#table').bootstrapTable('refresh');
-                    toastr.success(response.message || 'Transaction deleted successfully');
-                },
-                error: function(xhr) {
-                    toastr.error(`Error deleting order: ${xhr.responseJSON?.message || 'Unknown error'}`);
+            swal.fire({
+                title: "Confirm Deletion",
+                text: "Are you sure you want to delete this transaction? This action cannot be undone.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        method: 'DELETE',
+                        url: `/transactions/${id}`,
+                        dataType: 'json',
+                        cache: false,
+                        success: function(response) {
+                            $('#table').bootstrapTable('refresh');
+                            toastr.success(response.message || 'Transaction deleted successfully');
+                        },
+                        error: function(xhr) {
+                            toastr.error(
+                                `Error deleting transaction: ${xhr.responseJSON?.message || 'Unknown error'}`
+                            );
+                        }
+                    });
                 }
             });
         }
@@ -714,101 +760,119 @@
                 event.preventDefault();
                 $(this).find('.is-invalid').removeClass('is-invalid');
                 $(this).find('.invalid-feedback').remove();
+                swal.fire({
+                    title: "Confirm Creation",
+                    text: "Are you sure you want to add this new transaction?",
+                    icon: "info",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, add it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let total_amount = 0;
+                        const $items = $('#order-items-container .order-item');
+                        const servicePromises = [];
+                        const itemChecks = [];
 
-                let total_amount = 0;
-                const $items = $('#order-items-container .order-item');
-                const servicePromises = [];
-                const itemChecks = [];
+                        $items.each(function() {
+                            const serviceId = $(this).find('.service_id').val();
+                            const quantity = parseInt($(this).find('.quantity').val()) || 0;
+                            if (serviceId && quantity) {
+                                servicePromises.push(
+                                    $.ajax({
+                                        method: 'GET',
+                                        url: `/services/${serviceId}`,
+                                        dataType: 'json'
+                                    }).then(response => {
+                                        const service = response.content || response
+                                            .data ||
+                                            response;
+                                        return service.price * quantity;
+                                    })
+                                );
+                            }
 
-                $items.each(function() {
-                    const serviceId = $(this).find('.service_id').val();
-                    const quantity = parseInt($(this).find('.quantity').val()) || 0;
-                    if (serviceId && quantity) {
-                        servicePromises.push(
-                            $.ajax({
-                                method: 'GET',
-                                url: `/services/${serviceId}`,
-                                dataType: 'json'
-                            }).then(response => {
-                                const service = response.content || response.data ||
-                                    response;
-                                return service.price * quantity;
-                            })
-                        );
-                    }
-
-                    const $itemItems = $(this).find('.item-item');
-                    $itemItems.each(function() {
-                        const itemId = $(this).find('.item_item').val();
-                        const invQuantity = parseInt($(this).find('.item_quantity')
-                            .val()) || 0;
-                        if (itemId && invQuantity) {
-                            itemChecks.push(
-                                $.ajax({
-                                    method: 'GET',
-                                    url: `/items/${itemId}`,
-                                    dataType: 'json'
-                                }).then(response => {
-                                    const item = response.content || response
-                                        .data || response;
-                                    if (item.quantity < invQuantity) {
-                                        throw new Error(
-                                            `Insufficient item for ${item.item_name}`
-                                        );
-                                    }
-                                })
-                            );
-                        }
-                    });
-                });
-
-                Promise.all([...servicePromises, ...itemChecks]).then(amounts => {
-                    total_amount = amounts.slice(0, servicePromises.length).reduce((sum, amount) =>
-                        sum + amount, 0);
-                    const data = $(this).serializeArray();
-                    data.push({
-                        name: 'total_amount',
-                        value: total_amount.toFixed(2)
-                    });
-
-                    $.ajax({
-                        method: 'POST',
-                        url: '{{ route('transactions.store') }}',
-                        data: data,
-                        dataType: 'json',
-                        cache: false,
-                        success: function(response) {
-                            $('#addModal').modal('hide');
-                            $('#table').bootstrapTable('refresh');
-                            $('#addForm').trigger('reset');
-                            toastr.success(response.message ||
-                                'Transaction added successfully');
-                        },
-                        error: function(xhr) {
-                            const response = xhr.responseJSON || {};
-                            toastr.error(
-                                `Error adding order: ${response.message || 'Unknown error'}`
-                            );
-                            if (response.errors) {
-                                for (const [field, messages] of Object.entries(response
-                                        .errors)) {
-                                    const input = $(
-                                        `#addForm [name="${field}"], #addForm [name^="${field.replace(/\./g, '\\.')}"]`
+                            const $itemItems = $(this).find('.item-item');
+                            $itemItems.each(function() {
+                                const itemId = $(this).find('.item_item').val();
+                                const invQuantity = parseInt($(this).find(
+                                        '.item_quantity')
+                                    .val()) || 0;
+                                if (itemId && invQuantity) {
+                                    itemChecks.push(
+                                        $.ajax({
+                                            method: 'GET',
+                                            url: `/items/${itemId}`,
+                                            dataType: 'json'
+                                        }).then(response => {
+                                            const item = response.content ||
+                                                response
+                                                .data || response;
+                                            if (item.quantity <
+                                                invQuantity) {
+                                                throw new Error(
+                                                    `Insufficient item for ${item.item_name}`
+                                                );
+                                            }
+                                        })
                                     );
-                                    if (input.length) {
-                                        input.addClass('is-invalid');
-                                        const error = $(
-                                            '<span class="invalid-feedback"></span>'
-                                        ).text(messages[0]);
-                                        input.closest('.form-group').append(error);
+                                }
+                            });
+                        });
+
+                        Promise.all([...servicePromises, ...itemChecks]).then(amounts => {
+                            total_amount = amounts.slice(0, servicePromises.length).reduce((
+                                    sum, amount) =>
+                                sum + amount, 0);
+                            const data = $(this).serializeArray();
+                            data.push({
+                                name: 'total_amount',
+                                value: total_amount.toFixed(2)
+                            });
+
+                            $.ajax({
+                                method: 'POST',
+                                url: '{{ route('transactions.store') }}',
+                                data: data,
+                                dataType: 'json',
+                                cache: false,
+                                success: function(response) {
+                                    $('#addModal').modal('hide');
+                                    $('#table').bootstrapTable('refresh');
+                                    $('#addForm').trigger('reset');
+                                    toastr.success(response.message ||
+                                        'Transaction added successfully');
+                                },
+                                error: function(xhr) {
+                                    const response = xhr.responseJSON || {};
+                                    toastr.error(
+                                        `Error adding order: ${response.message || 'Unknown error'}`
+                                    );
+                                    if (response.errors) {
+                                        for (const [field, messages] of Object
+                                            .entries(response
+                                                .errors)) {
+                                            const input = $(
+                                                `#addForm [name="${field}"], #addForm [name^="${field.replace(/\./g, '\\.')}"]`
+                                            );
+                                            if (input.length) {
+                                                input.addClass('is-invalid');
+                                                const error = $(
+                                                    '<span class="invalid-feedback"></span>'
+                                                ).text(messages[0]);
+                                                input.closest('.form-group')
+                                                    .append(error);
+                                            }
+                                        }
                                     }
                                 }
-                            }
-                        }
-                    });
-                }).catch(error => {
-                    toastr.error(error.message ||
-                        'Error calculating total amount or checking item');
+                            });
+                        }).catch(error => {
+                            toastr.error(error.message ||
+                                'Error calculating total amount or checking item');
+                        });
+                    }
                 });
             });
 
@@ -816,101 +880,119 @@
                 event.preventDefault();
                 $(this).find('.is-invalid').removeClass('is-invalid');
                 $(this).find('.invalid-feedback').remove();
+                swal.fire({
+                    title: "Confirm Update",
+                    text: "Are you sure you want to update this transaction?",
+                    icon: "info",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, update it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let total_amount = 0;
+                        const $items = $('#update-order-items-container .order-item');
+                        const servicePromises = [];
+                        const itemChecks = [];
 
-                let total_amount = 0;
-                const $items = $('#update-order-items-container .order-item');
-                const servicePromises = [];
-                const itemChecks = [];
+                        $items.each(function() {
+                            const serviceId = $(this).find('.service_id').val();
+                            const quantity = parseInt($(this).find('.quantity').val()) || 0;
+                            if (serviceId && quantity) {
+                                servicePromises.push(
+                                    $.ajax({
+                                        method: 'GET',
+                                        url: `/services/${serviceId}`,
+                                        dataType: 'json'
+                                    }).then(response => {
+                                        const service = response.content || response
+                                            .data ||
+                                            response;
+                                        return service.price * quantity;
+                                    })
+                                );
+                            }
 
-                $items.each(function() {
-                    const serviceId = $(this).find('.service_id').val();
-                    const quantity = parseInt($(this).find('.quantity').val()) || 0;
-                    if (serviceId && quantity) {
-                        servicePromises.push(
-                            $.ajax({
-                                method: 'GET',
-                                url: `/services/${serviceId}`,
-                                dataType: 'json'
-                            }).then(response => {
-                                const service = response.content || response.data ||
-                                    response;
-                                return service.price * quantity;
-                            })
-                        );
-                    }
-
-                    const $itemItems = $(this).find('.item-item');
-                    $itemItems.each(function() {
-                        const itemId = $(this).find('.item_item').val();
-                        const invQuantity = parseInt($(this).find('.item_quantity')
-                            .val()) || 0;
-                        if (itemId && invQuantity) {
-                            itemChecks.push(
-                                $.ajax({
-                                    method: 'GET',
-                                    url: `/items/${itemId}`,
-                                    dataType: 'json'
-                                }).then(response => {
-                                    const item = response.content || response
-                                        .data || response;
-                                    if (item.quantity < invQuantity) {
-                                        throw new Error(
-                                            `Insufficient item for ${item.item_name}`
-                                        );
-                                    }
-                                })
-                            );
-                        }
-                    });
-                });
-
-                Promise.all([...servicePromises, ...itemChecks]).then(amounts => {
-                    total_amount = amounts.slice(0, servicePromises.length).reduce((sum, amount) =>
-                        sum + amount, 0);
-                    const data = $(this).serializeArray();
-                    data.push({
-                        name: 'total_amount',
-                        value: total_amount.toFixed(2)
-                    });
-
-                    $.ajax({
-                        method: 'PUT',
-                        url: `/transactions/${dataId}`,
-                        data: data,
-                        dataType: 'json',
-                        cache: false,
-                        success: function(response) {
-                            $('#updateModal').modal('hide');
-                            $('#table').bootstrapTable('refresh');
-                            $('#updateForm').trigger('reset');
-                            toastr.success(response.message ||
-                                'Transaction updated successfully');
-                        },
-                        error: function(xhr) {
-                            const response = xhr.responseJSON || {};
-                            toastr.error(
-                                `Error updating order: ${response.message || 'Unknown error'}`
-                            );
-                            if (response.errors) {
-                                for (const [field, messages] of Object.entries(response
-                                        .errors)) {
-                                    const input = $(
-                                        `#updateForm [name="${field}"], #updateForm [name^="${field.replace(/\./g, '\\.')}"]`
+                            const $itemItems = $(this).find('.item-item');
+                            $itemItems.each(function() {
+                                const itemId = $(this).find('.item_item').val();
+                                const invQuantity = parseInt($(this).find(
+                                        '.item_quantity')
+                                    .val()) || 0;
+                                if (itemId && invQuantity) {
+                                    itemChecks.push(
+                                        $.ajax({
+                                            method: 'GET',
+                                            url: `/items/${itemId}`,
+                                            dataType: 'json'
+                                        }).then(response => {
+                                            const item = response.content ||
+                                                response
+                                                .data || response;
+                                            if (item.quantity <
+                                                invQuantity) {
+                                                throw new Error(
+                                                    `Insufficient item for ${item.item_name}`
+                                                );
+                                            }
+                                        })
                                     );
-                                    if (input.length) {
-                                        input.addClass('is-invalid');
-                                        const error = $(
-                                            '<span class="invalid-feedback"></span>'
-                                        ).text(messages[0]);
-                                        input.closest('.form-group').append(error);
+                                }
+                            });
+                        });
+
+                        Promise.all([...servicePromises, ...itemChecks]).then(amounts => {
+                            total_amount = amounts.slice(0, servicePromises.length).reduce((
+                                    sum, amount) =>
+                                sum + amount, 0);
+                            const data = $(this).serializeArray();
+                            data.push({
+                                name: 'total_amount',
+                                value: total_amount.toFixed(2)
+                            });
+
+                            $.ajax({
+                                method: 'PUT',
+                                url: `/transactions/${dataId}`,
+                                data: data,
+                                dataType: 'json',
+                                cache: false,
+                                success: function(response) {
+                                    $('#updateModal').modal('hide');
+                                    $('#table').bootstrapTable('refresh');
+                                    $('#updateForm').trigger('reset');
+                                    toastr.success(response.message ||
+                                        'Transaction updated successfully');
+                                },
+                                error: function(xhr) {
+                                    const response = xhr.responseJSON || {};
+                                    toastr.error(
+                                        `Error updating order: ${response.message || 'Unknown error'}`
+                                    );
+                                    if (response.errors) {
+                                        for (const [field, messages] of Object
+                                            .entries(response
+                                                .errors)) {
+                                            const input = $(
+                                                `#updateForm [name="${field}"], #updateForm [name^="${field.replace(/\./g, '\\.')}"]`
+                                            );
+                                            if (input.length) {
+                                                input.addClass('is-invalid');
+                                                const error = $(
+                                                    '<span class="invalid-feedback"></span>'
+                                                ).text(messages[0]);
+                                                input.closest('.form-group')
+                                                    .append(error);
+                                            }
+                                        }
                                     }
                                 }
-                            }
-                        }
-                    });
-                }).catch(error => {
-                    toastr.error(error.message ||
-                        'Error calculating total amount or checking item');
+                            });
+                        }).catch(error => {
+                            toastr.error(error.message ||
+                                'Error calculating total amount or checking item');
+                        });
+                    }
                 });
             });
         });

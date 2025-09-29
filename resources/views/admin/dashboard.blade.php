@@ -128,7 +128,7 @@
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>#</th>
                                         <th>Customer</th>
                                         <th>Transaction Date</th>
                                         <th>Total Amount</th>

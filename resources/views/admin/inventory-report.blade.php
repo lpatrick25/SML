@@ -106,7 +106,7 @@
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>#</th>
                                         <th>Name</th>
                                         <th>Quantity</th>
                                         <th>Unit</th>
@@ -152,7 +152,7 @@
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>#</th>
                                         <th>Item</th>
                                         <th>Change Type</th>
                                         <th>Quantity</th>

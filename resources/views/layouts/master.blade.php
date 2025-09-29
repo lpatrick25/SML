@@ -98,19 +98,12 @@
                 </div>
                 <!--logo End-->
 
-
-
-
                 <h4 class="logo-title">Nora - Laundry</h4>
             </a>
             <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
                 <i class="icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4.25 12.2744L19.25 12.2744" stroke="currentColor" stroke-width="1.5"
-                            stroke-linecap="round" stroke-linejoin="round"></path>
-                        <path d="M10.2998 18.2988L4.2498 12.2748L10.2998 6.24976" stroke="currentColor"
-                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <svg width="20px" class="icon-20" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z" />
                     </svg>
                 </i>
             </div>
@@ -163,15 +156,12 @@
                         <!--logo End-->
 
 
-
-
                         <h4 class="logo-title">Nora - Laundry</h4>
                     </a>
                     <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
                         <i class="icon">
                             <svg width="20px" class="icon-20" viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" />
+                                <path fill="currentColor" d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z" />
                             </svg>
                         </i>
                     </div>
@@ -211,14 +201,14 @@
                                     <p>Manage your laundry services efficiently and effectively.</p>
                                 </div>
                                 <div>
-                                    <a href="" class="btn btn-link btn-soft-light">
+                                    {{-- <a href="" class="btn btn-link btn-soft-light">
                                         <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path d="M15 19L8 12L15 5" stroke="currentColor" stroke-width="2"
                                                 stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
                                         Go Back
-                                    </a>
+                                    </a> --}}
                                 </div>
                             </div>
                         </div>
