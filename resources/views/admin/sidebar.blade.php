@@ -1,104 +1,74 @@
-<ul class="navbar-nav iq-main-menu" id="sidebar-menu">
-    <!-- Section: Home -->
-    <li class="nav-item static-item">
-        <a class="nav-link static-item disabled" href="#" tabindex="-1">
-            <span class="default-icon">Home</span>
-            <span class="mini-icon">-</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link @yield('active-dashboard')" aria-current="page" href="{{ route('admin.dashboard') }}">
-            <i class="bi bi-speedometer2"></i>
-            <span class="item-name">Dashboard</span>
-        </a>
-    </li>
-    <li>
-        <hr class="hr-horizontal">
-    </li>
+<div class="sidebar">
+    <!-- Sidebar user (optional) -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+            <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+            <a href="#" class="d-block">
+                {{ auth()->check() && auth()->user()->full_name ? auth()->user()->full_name : 'Unknown User' }}
+            </a>
+        </div>
+    </div>
 
-    <!-- Section: Main Components -->
-    <li class="nav-item static-item">
-        <a class="nav-link static-item disabled" href="#" tabindex="-1">
-            <span class="default-icon">Main Components</span>
-            <span class="mini-icon">-</span>
-        </a>
-    </li>
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column">
+            <li class="nav-header">HOME</li>
+            <li class="nav-item">
+                <a href="{{ route('admin.dashboard') }}" class="nav-link @yield('active-dashboard')">
+                    <i class="nav-icon bi bi-speedometer2"></i>
+                    <p>Dashboard</p>
+                </a>
+            </li>
 
-    <li class="nav-item">
-        <a class="nav-link @yield('active-user-list')" href="{{ route('admin.userList') }}">
-            <i class="bi bi-person-lines-fill"></i>
-            <span class="item-name">User List</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link @yield('active-customers-management')" href="{{ route('admin.customersManagement') }}">
-            <i class="bi bi-people"></i>
-            <span class="item-name">Customers</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link @yield('active-services-management')" href="{{ route('admin.servicesManagement') }}">
-            <i class="bi bi-gear"></i>
-            <span class="item-name">Services</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link @yield('active-item-management')" href="{{ route('admin.itemManagement') }}">
-            <i class="bi bi-box-seam"></i>
-            <span class="item-name">Items</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link @yield('active-orders-management')" href="{{ route('admin.ordersManagement') }}">
-            <i class="bi bi-bag-check"></i>
-            <span class="item-name">Transactions</span>
-        </a>
-    </li>
-    <li>
-        <hr class="hr-horizontal">
-    </li>
+            <li class="nav-header">MAIN COMPONENTS</li>
+            <li class="nav-item">
+                <a href="{{ route('admin.userList') }}" class="nav-link @yield('active-users')">
+                    <i class="bi bi-person-lines-fill"></i>
+                    <p>User List</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('admin.customersManagement') }}" class="nav-link @yield('active-customers')">
+                    <i class="bi bi-people"></i>
+                    <p>Customers</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('admin.servicesManagement') }}" class="nav-link @yield('active-services')">
+                    <i class="bi bi-gear"></i>
+                    <p>Services</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('admin.itemManagement') }}" class="nav-link @yield('active-items')">
+                    <i class="bi bi-box-seam"></i>
+                    <p>Items</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('admin.ordersManagement') }}" class="nav-link @yield('active-transactions')">
+                    <i class="bi bi-bag-check"></i>
+                    <p>Transactions</p>
+                </a>
+            </li>
 
-    <!-- Section: User Components -->
-    {{-- <li class="nav-item static-item">
-        <a class="nav-link static-item disabled" href="#" tabindex="-1">
-            <span class="default-icon">User Components</span>
-            <span class="mini-icon">-</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link @yield('active-user-list')" href="{{ route('admin.userList') }}">
-            <i class="bi bi-person-lines-fill"></i>
-            <span class="item-name">User List</span>
-        </a>
-    </li> --}}
-    {{-- <li class="nav-item">
-        <a class="nav-link @yield('active-user-management')" href="{{ route('admin.userManagement') }}">
-            <i class="bi bi-person-gear"></i>
-            <span class="item-name">User Management</span>
-        </a>
-    </li> --}}
+            <li class="nav-header">REPORT COMPONENTS</li>
+            <li class="nav-item">
+                <a href="{{ route('admin.salesReport') }}" class="nav-link @yield('active-sales')">
+                    <i class="bi bi-file-earmark-bar-graph"></i>
+                    <p>Sales Report</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('admin.inventoryReport') }}" class="nav-link @yield('active-inventory')">
+                    <i class="bi bi-clipboard-data"></i>
+                    <p>Inventory Report</p>
+                </a>
+            </li>
 
-
-    <!-- Section: User Components -->
-    <li class="nav-item static-item">
-        <a class="nav-link static-item disabled" href="#" tabindex="-1">
-            <span class="default-icon">Report Components</span>
-            <span class="mini-icon">-</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link @yield('active-sales-report')" href="{{ route('admin.salesReport') }}">
-            <i class="bi bi-file-earmark-bar-graph"></i>
-            <span class="item-name">Sales Report</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link @yield('active-inventory-report')" href="{{ route('admin.inventoryReport') }}">
-            <i class="bi bi-clipboard-data"></i>
-            <span class="item-name">Inventory Report</span>
-        </a>
-    </li>
-    <li>
-        <hr class="hr-horizontal">
-    </li>
-</ul>
+        </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+</div>
