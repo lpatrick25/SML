@@ -32,6 +32,7 @@ class TransactionResource extends Resource
                 'id' => $item->id,
                 'service_id' => $item->service_id,
                 'quantity' => $item->quantity,
+                'kilograms' => $item->kilograms,
                 'subtotal' => $item->subtotal,
                 'service' => $item->service ? [
                     'id' => $item->service->id,

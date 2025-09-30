@@ -133,6 +133,10 @@
                                 window.location.href = '/admin/dashboard';
                                 return;
                             }
+                            if (data.user.role === 'Staff') {
+                                window.location.href = '/staff/dashboard';
+                                return;
+                            }
                             window.location.href = '/dashboard';
                         }, 1000);
                     },

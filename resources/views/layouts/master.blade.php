@@ -62,7 +62,12 @@
             </a>
 
             <!-- Sidebar -->
-            @include('admin.sidebar')
+            @if (auth()->user()->role == 'Admin')
+                @include('admin.sidebar')
+            @endif
+            @if (auth()->user()->role == 'Staff')
+                @include('staff.sidebar')
+            @endif
             <!-- /.sidebar -->
         </aside>
 

@@ -8,6 +8,7 @@ use App\Http\Resources\Transaction\TransactionCollection;
 use App\Http\Resources\Transaction\TransactionResource;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Service;
 use App\Services\TransactionServices;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -102,5 +103,29 @@ class TransactionController extends Controller
             'content' => new TransactionResource($transaction),
             'message' => 'Status updated successfully'
         ]);
+    }
+
+    public function getTotalAmount(Request $request)
+    {
+        $serviceInput = $request->input('service');
+        $kilogramsInput = $request->input('kilograms');
+
+        $service = Service::findOrFail($serviceInput);
+
+        if (!$service) {
+            return response()->json('Service not found');
+        }
+
+        $serviceKilograms = $service->kilograms;
+
+        if ($kilogramsInput > $serviceKilograms) {
+            $load = ceil($kilogramsInput / $serviceKilograms);
+            $totalAmount = $load * $service->price;
+        } else {
+            $load = 1;
+            $totalAmount = $load * $service->price;
+        }
+
+        return response()->json(['load' => $load, 'totalAmount' => $totalAmount]);
     }
 }

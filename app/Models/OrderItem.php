@@ -12,6 +12,7 @@ class OrderItem extends Model
         'transaction_id',
         'service_id',
         'quantity',
+        'kilograms',
         'subtotal',
     ];
 

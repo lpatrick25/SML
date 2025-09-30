@@ -195,7 +195,8 @@
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!"
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
@@ -305,7 +306,8 @@
                         showCancelButton: true,
                         confirmButtonColor: "#3085d6",
                         cancelButtonColor: "#d33",
-                        confirmButtonText: "Yes, add it!"
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $.ajax({
@@ -367,7 +369,8 @@
                         showCancelButton: true,
                         confirmButtonColor: "#3085d6",
                         cancelButtonColor: "#d33",
-                        confirmButtonText: "Yes, update it!"
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
                     }).then((result) => {
                         if (result.isConfirmed) {
                             const dataId = $(form).data('id');

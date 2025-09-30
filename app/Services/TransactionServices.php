@@ -23,49 +23,74 @@ class TransactionServices
     public function create(array $data): Order
     {
         return DB::transaction(function () use ($data) {
-            $total_amount = 0;
-            $transaction_items = $data['transaction_items'] ?? [];
-            unset($data['transaction_items']);
 
-            // Validate item quantities
-            foreach ($transaction_items as $item) {
-                $service = Service::findOrFail($item['service_id']);
-                $total_amount += $service->price * $item['quantity'];
-                foreach ($item['item_items'] ?? [] as $invItem) {
-                    $item = Item::findOrFail($invItem['item_id']);
-                    if ($item->quantity < $invItem['quantity']) {
-                        throw new \Exception("Insufficient item for {$item->item_name}");
-                    }
-                }
-            }
+            $transaction = Order::create([
+                'customer_id' => $data['customer_id'],
+                'staff_id' => $data['staff_id'],
+                'transaction_date' => $data['transaction_date'],
+                'transaction_status' => $data['transaction_status'],
+                'total_amount' => $data['total_amount'],
+                'payment_status' => $data['payment_status'],
+            ]);
 
-            $data['total_amount'] = $total_amount;
-            $transaction = Order::create($data);
+            $transactionItem = OrderItem::create([
+                'transaction_id' => $transaction->id,
+                'service_id' => $data['service_id'],
+                'quantity' => $data['load'],
+                'kilograms' => $data['kilograms'],
+                'subtotal' => $data['total_amount']
+            ]);
 
-            foreach ($transaction_items as $index => $item) {
-                $service = Service::findOrFail($item['service_id']);
-                $transactionItem = OrderItem::create([
-                    'transaction_id' => $transaction->id,
-                    'service_id' => $item['service_id'],
-                    'quantity' => $item['quantity'],
-                    'subtotal' => $service->price * $item['quantity'],
-                ]);
+            $item = Item::findOrFail($data['item_id']);
+            $deduction = $data['load'] * 2;
 
-                foreach ($item['item_items'] ?? [] as $invItem) {
-                    $item = Item::findOrFail($invItem['item_id']);
-                    $item->decrement('quantity', $invItem['quantity']);
-                    ItemLog::create([
-                        'item_id' => $invItem['item_id'],
-                        'transaction_item_id' => $transactionItem->id,
-                        'change_type' => 'Out',
-                        'quantity' => $invItem['quantity'],
-                        'description' => "Used in transaction item #{$transactionItem->id} for transaction #{$transaction->id}",
-                        'staff_id' => $data['staff_id'] ?? null,
-                    ]);
-                }
-            }
+            $item->decrement('quantity', $deduction);
+
+            ItemLog::create([
+                'item_id' => $data['item_id'],
+                'transaction_item_id' => $transactionItem->id,
+                'change_type' => 'Out',
+                'quantity' => $deduction,
+                'description' => "Used in transaction item #{$transactionItem->id} for transaction #{$transaction->id}",
+                'staff_id' => $data['staff_id'] ?? null,
+            ]);
 
             return $transaction->load('customer', 'staff', 'transactionItems.service', 'transactionItems.itemLogs.item');
+
+            // // Validate item quantities
+            // foreach ($transaction_items as $item) {
+            //     $service = Service::findOrFail($item['service_id']);
+            //     $total_amount += $service->price * $item['quantity'];
+            //     foreach ($item['item_items'] ?? [] as $invItem) {
+            //         $item = Item::findOrFail($invItem['item_id']);
+            //         if ($item->quantity < $invItem['quantity']) {
+            //             throw new \Exception("Insufficient item for {$item->item_name}");
+            //         }
+            //     }
+            // }
+
+            // $data['total_amount'] = $total_amount;
+            // $transaction = Order::create($data);
+
+            // foreach ($transaction_items as $index => $item) {
+            //     $service = Service::findOrFail($item['service_id']);
+
+
+            //     foreach ($item['item_items'] ?? [] as $invItem) {
+            //         $item = Item::findOrFail($invItem['item_id']);
+            //         $item->decrement('quantity', $invItem['quantity']);
+            //         ItemLog::create([
+            //             'item_id' => $invItem['item_id'],
+            //             'transaction_item_id' => $transactionItem->id,
+            //             'change_type' => 'Out',
+            //             'quantity' => $invItem['quantity'],
+            //             'description' => "Used in transaction item #{$transactionItem->id} for transaction #{$transaction->id}",
+            //             'staff_id' => $data['staff_id'] ?? null,
+            //         ]);
+            //     }
+            // }
+
+            // return $transaction->load('customer', 'staff', 'transactionItems.service', 'transactionItems.itemLogs.item');
         });
     }
 

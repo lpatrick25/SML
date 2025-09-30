@@ -13,6 +13,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ItemLogController;
 use App\Http\Controllers\SalesReportController;
+use App\Http\Controllers\StaffController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
@@ -50,6 +51,15 @@ Route::prefix('admin')->middleware('auth')->group(function() {
     // Report Components
     Route::get('sales-report', [SalesReportController::class, 'index'])->name('admin.salesReport');
     Route::get('/inventory', [InventoryController::class, 'index'])->name('admin.inventoryReport');
+});
+
+Route::prefix('staff')->middleware('auth')->group(function() {
+    Route::get('dashboard', [StaffController::class, 'dashboard'])->name('admin.dashboard');
+
+
+    // Main Components
+    Route::get('customers-management', [StaffController::class, 'customersManagement'])->name('admin.customersManagement');
+    Route::get('orders-management', [StaffController::class, 'ordersManagement'])->name('admin.ordersManagement');
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -107,6 +117,7 @@ Route::resource('transactions', TransactionController::class)->names([
     'destroy' => 'transactions.destroy',
 ]);
 Route::patch('/transactions/{transaction}/status', [TransactionController::class, 'changeStatus']);
+Route::post('/transactions/getTotalAmount', [TransactionController::class, 'getTotalAmount']);
 
 Route::resource('payments', PaymentController::class)->names([
     'index' => 'payments.index',

@@ -57,24 +57,34 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
+                        <input type="hidden" class="form-control" id="staff_id" name="staff_id" readonly
+                            value="{{ auth()->user()->id }}">
+                        <div class="col-lg-6 form-group">
+                            <label for="add_transaction_date">Transaction Date <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="add_transaction_date" name="transaction_date"
+                                readonly value="{{ date('Y-m-d') }}">
+                        </div>
                         <div class="col-lg-6 form-group">
                             <label for="add_customer_id">Customer <span class="text-danger">*</span></label>
                             <select class="form-control select2" id="add_customer_id" name="customer_id" required>
                                 <option value="">Select Customer</option>
-                                <!-- Populated dynamically via AJAX -->
+                                @foreach ($customers as $customer)
+                                    <option value="{{ $customer->id }}">{{ $customer->fullname }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-lg-6 form-group">
-                            <label for="add_staff_id">Staff</label>
-                            <select class="form-control select2" id="add_staff_id" name="staff_id">
-                                <option value="">Select Staff (Optional)</option>
-                                <!-- Populated dynamically via AJAX -->
+                            <label for="add_service_id">Services <span class="text-danger">*</span></label>
+                            <select class="form-control select2" id="add_service_id" name="service_id" required>
+                                <option value="">Select Service</option>
+                                @foreach ($services as $service)
+                                    <option value="{{ $service->id }}">{{ $service->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-lg-6 form-group">
-                            <label for="add_transaction_date">Transaction Date <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" id="add_transaction_date" name="transaction_date"
-                                required>
+                            <label for="add_total_amount">Total Amount <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="add_total_amount" name="total_amount" readonly>
                         </div>
                         <div class="col-lg-6 form-group">
                             <label for="add_transaction_status">Transaction Status <span
@@ -96,12 +106,22 @@
                                 <option value="Partial">Partial</option>
                             </select>
                         </div>
-                        <div class="col-lg-12 form-group">
-                            <label>Transaction Items <span class="text-danger">*</span></label>
-                            <div id="order-items-container">
-                                <!-- Dynamic items added here -->
-                            </div>
-                            <button type="button" class="btn btn-sm btn-primary mt-2" id="add-item-btn">Add Item</button>
+                        <div class="col-lg-6 form-group">
+                            <label for="add_kilograms">Kilograms <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="add_kilograms" name="kilograms" required>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label for="add_load">Load <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="add_load" name="load" readonly>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label for="add_item_id">Item <span class="text-danger">*</span></label>
+                            <select class="form-control select2" id="add_item_id" name="item_id" required>
+                                <option value="">Select Items</option>
+                                @foreach ($items as $item)
+                                    <option value="{{ $item->id }}">{{ $item->item_name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -126,25 +146,36 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-lg-6 form-group">
-                            <label for="update_customer_id">Customer <span class="text-danger">*</span></label>
-                            <select class="form-control select2" id="update_customer_id" name="customer_id" required>
-                                <option value="">Select Customer</option>
-                                <!-- Populated dynamically via AJAX -->
-                            </select>
-                        </div>
-                        <div class="col-lg-6 form-group">
-                            <label for="update_staff_id">Staff</label>
-                            <select class="form-control select2" id="update_staff_id" name="staff_id">
-                                <option value="">Select Staff (Optional)</option>
-                                <!-- Populated dynamically via AJAX -->
-                            </select>
-                        </div>
+                        <input type="hidden" class="form-control" id="update_staff_id" name="staff_id" readonly
+                            value="{{ auth()->user()->id }}">
                         <div class="col-lg-6 form-group">
                             <label for="update_transaction_date">Transaction Date <span
                                     class="text-danger">*</span></label>
                             <input type="date" class="form-control" id="update_transaction_date"
-                                name="transaction_date" required>
+                                name="transaction_date" readonly value="{{ date('Y-m-d') }}">
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label for="update_customer_id">Customer <span class="text-danger">*</span></label>
+                            <select class="form-control select2" id="update_customer_id" name="customer_id" required>
+                                <option value="">Select Customer</option>
+                                @foreach ($customers as $customer)
+                                    <option value="{{ $customer->id }}">{{ $customer->fullname }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label for="update_service_id">Services <span class="text-danger">*</span></label>
+                            <select class="form-control select2" id="update_service_id" name="service_id" required>
+                                <option value="">Select Service</option>
+                                @foreach ($services as $service)
+                                    <option value="{{ $service->id }}">{{ $service->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label for="update_total_amount">Total Amount <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="update_total_amount" name="total_amount"
+                                readonly>
                         </div>
                         <div class="col-lg-6 form-group">
                             <label for="update_transaction_status">Transaction Status <span
@@ -167,13 +198,22 @@
                                 <option value="Partial">Partial</option>
                             </select>
                         </div>
-                        <div class="col-lg-12 form-group">
-                            <label>Transaction Items <span class="text-danger">*</span></label>
-                            <div id="update-order-items-container">
-                                <!-- Dynamic items added here -->
-                            </div>
-                            <button type="button" class="btn btn-sm btn-primary mt-2" id="update-add-item-btn">Add
-                                Item</button>
+                        <div class="col-lg-6 form-group">
+                            <label for="update_kilograms">Kilograms <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="update_kilograms" name="kilograms" required>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label for="update_load">Load <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="update_load" name="load" readonly>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label for="update_item_id">Item <span class="text-danger">*</span></label>
+                            <select class="form-control select2" id="update_item_id" name="item_id" required>
+                                <option value="">Select Items</option>
+                                @foreach ($items as $item)
+                                    <option value="{{ $item->id }}">{{ $item->item_name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -357,7 +397,6 @@
         }
 
 
-
         // View transaction
         function viewData(id) {
             $.ajax({
@@ -421,67 +460,51 @@
 
         // Edit transaction
         function editData(id) {
-            const transactionPromise = $.ajax({
+
+            $.ajax({
                 method: 'GET',
                 url: `{{ route('transactions.index') }}/${id}`,
                 dataType: 'json',
-                cache: false
-            });
+                cache: false,
+                success: function(response) {
+                    var data = response.content;
+                    var transactionItems = data.transaction_items;
 
-            const customerPromise = populateSelect('{{ route('customers.index') }}', 'update_customer_id', 'fullname',
-            'id');
-            const staffPromise = populateSelect('{{ route('users.index') }}', 'update_staff_id', 'fullname', 'id');
+                    console.log(transactionItems);
 
-            Promise.all([customerPromise, staffPromise, transactionPromise]).then(([_, __, response]) => {
-                const data = response.content || response;
-                console.log('Transaction Data:', data);
-                $('#updateForm').data('id', data.id);
-                $('#update_customer_id').val(data.customer_id).trigger('change.select2');
-                $('#update_staff_id').val(data.staff_id || '').trigger('change.select2');
-                $('#update_transaction_date').val(data.transaction_date);
-                $('#update_transaction_status').val(data.transaction_status).trigger('change.select2');
-                $('#update_payment_status').val(data.payment_status).trigger('change.select2');
+                    if (transactionItems.length > 0) {
+                        // Example: just take the first transaction item
+                        var firstItem = transactionItems[0];
 
-                const $container = $('#update-order-items-container').empty();
-                let itemIndex = 0;
-                const itemPromises = [];
-                if (data.transaction_items && data.transaction_items.length) {
-                    data.transaction_items.forEach(item => {
-                        const itemItems = item.item_logs ? item.item_logs.map(log => ({
-                            item_id: log.item_id,
-                            quantity: log.quantity
-                        })) : [];
-                        itemPromises.push(
-                            addTransactionItem(
-                                'update-order-items-container',
-                                itemIndex,
-                                item.service_id,
-                                item.quantity,
-                                item.service ? item.service.kilograms || '' : '',
-                                item.service ? item.service.price : '',
-                                itemItems
-                            )
-                        );
-                        itemIndex++;
-                    });
-                } else {
-                    itemPromises.push(addTransactionItem('update-order-items-container', itemIndex));
-                    itemIndex++;
-                }
+                        $('#update_service_id').val(firstItem.service_id);
+                        $('#update_kilograms').val(firstItem.kilograms);
+                        $('#update_load').val(firstItem.quantity);
 
-                Promise.all(itemPromises).then(() => {
+                        var itemLogs = firstItem.item_logs;
+                        console.log(itemLogs)
+                        if (itemLogs.length > 0) {
+                            var firstItemLogs = itemLogs[0];
+
+                            $('#update_item_id').val(firstItemLogs.item_id);
+                        }
+
+                    }
+
+                    $('#update_customer_id').val(data.customer_id);
+                    $('#update_staff_id').val(data.staff_id);
+                    $('#update_item_id').val(firstItem?.item_logs?.[0]?.item_id ?? '');
+                    $('#update_transaction_date').val(data.transaction_date);
+                    $('#update_transaction_status').val(data.transaction_status);
+                    $('#update_total_amount').val(data.total_amount);
+                    $('#update_payment_status').val(data.payment_status);
+
+                    $('#updateForm').find('select').trigger('change');
+
                     $('#updateModal').modal({
                         backdrop: 'static',
                         keyboard: false
                     }).modal('show');
-                }).catch(error => {
-                    console.error('Error adding transaction items:', error);
-                    toastr.error('Error populating transaction items: ' + (error.message ||
-                        'Unknown error'));
-                });
-            }).catch(error => {
-                toastr.error('Error fetching transaction data: ' + (error.responseJSON?.message || error.message ||
-                    'Unknown error'));
+                }
             });
         }
 
@@ -685,8 +708,8 @@
                 placeholder: 'Select an option',
                 allowClear: true
             }); // Populate dropdowns for Add modal
-            populateSelect('{{ route('customers.index') }}', 'add_customer_id', 'fullname', 'id');
-            populateSelect('{{ route('users.index') }}', 'add_staff_id', 'fullname', 'id');
+            // populateSelect('{{ route('customers.index') }}', 'add_customer_id', 'fullname', 'id');
+            // populateSelect('{{ route('users.index') }}', 'add_staff_id', 'fullname', 'id');
 
             // Initialize Bootstrap Table
             $('#table').bootstrapTable({
@@ -728,6 +751,26 @@
                     backdrop: 'static',
                     keyboard: false
                 }).modal('show');
+            });
+
+            $('#add_kilograms').change(function() {
+                var service = $('#add_service_id').val();
+                var kilograms = $('#add_kilograms').val();
+                if (service !== '' && kilograms !== '') {
+                    $.ajax({
+                        method: 'POST',
+                        url: '/transactions/getTotalAmount',
+                        data: {
+                            service: service,
+                            kilograms: kilograms,
+                        },
+                        cache: false,
+                        success: function(response) {
+                            $('#add_total_amount').val(response.totalAmount);
+                            $('#add_load').val(response.load);
+                        }
+                    });
+                }
             });
 
             // Add transaction item
@@ -811,14 +854,6 @@
                     payment_status: {
                         required: true
                     },
-                    'transaction_items[0][service_id]': {
-                        required: true
-                    },
-                    'transaction_items[0][quantity]': {
-                        required: true,
-                        number: true,
-                        min: 1
-                    }
                 },
                 errorElement: 'span',
                 errorPlacement: function(error, element) {
@@ -843,91 +878,28 @@
                 cancelButtonText: "No",
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            const $items = $('#order-items-container .order-item');
-                            const servicePromises = [];
-                            const itemChecks = [];
-                            let total_amount = 0;
-
-                            $items.each(function() {
-                                const serviceId = $(this).find('.service_id').val();
-                                const quantity = parseInt($(this).find('.quantity')
-                                    .val()) || 0;
-                                if (serviceId && quantity) {
-                                    servicePromises.push(
-                                        $.ajax({
-                                            method: 'GET',
-                                            url: `{{ route('services.index') }}/${serviceId}`,
-                                            dataType: 'json'
-                                        }).then(response => {
-                                            const service = response.content ||
-                                                response.data || response;
-                                            return service.price * quantity;
-                                        })
+                            $.ajax({
+                                method: 'POST',
+                                url: '{{ route('transactions.store') }}',
+                                data: $(form).serialize(),
+                                dataType: 'json',
+                                cache: false,
+                                success: function(response) {
+                                    $('#addModal').modal('hide');
+                                    $('#table').bootstrapTable(
+                                        'refresh');
+                                    $(form).trigger('reset');
+                                    toastr.success(response.message ||
+                                        'Transaction added successfully'
                                     );
+                                },
+                                error: function(xhr) {
+                                    toastr.error(
+                                        'Error adding transaction: ' +
+                                        (xhr.responseJSON
+                                            ?.message ||
+                                            'Unknown error'));
                                 }
-                                const $itemItems = $(this).find('.item-item');
-                                $itemItems.each(function() {
-                                    const itemId = $(this).find('.item_item')
-                                        .val();
-                                    const invQuantity = parseInt($(this).find(
-                                        '.item_quantity').val()) || 0;
-                                    if (itemId && invQuantity) {
-                                        itemChecks.push(
-                                            $.ajax({
-                                                method: 'GET',
-                                                url: `{{ route('items.index') }}/${itemId}`,
-                                                dataType: 'json'
-                                            }).then(response => {
-                                                const item = response
-                                                    .content || response
-                                                    .data || response;
-                                                if (item.quantity <
-                                                    invQuantity) {
-                                                    throw new Error(
-                                                        `Insufficient stock for ${item.item_name}`
-                                                    );
-                                                }
-                                            })
-                                        );
-                                    }
-                                });
-                            });
-
-                            Promise.all([...servicePromises, ...itemChecks]).then(amounts => {
-                                total_amount = amounts.slice(0, servicePromises.length)
-                                    .reduce((sum, amount) => sum + amount, 0);
-                                const data = $(form).serializeArray();
-                                data.push({
-                                    name: 'total_amount',
-                                    value: total_amount.toFixed(2)
-                                });
-
-                                $.ajax({
-                                    method: 'POST',
-                                    url: '{{ route('transactions.store') }}',
-                                    data: data,
-                                    dataType: 'json',
-                                    cache: false,
-                                    success: function(response) {
-                                        $('#addModal').modal('hide');
-                                        $('#table').bootstrapTable(
-                                            'refresh');
-                                        $(form).trigger('reset');
-                                        toastr.success(response.message ||
-                                            'Transaction added successfully'
-                                        );
-                                    },
-                                    error: function(xhr) {
-                                        toastr.error(
-                                            'Error adding transaction: ' +
-                                            (xhr.responseJSON
-                                                ?.message ||
-                                                'Unknown error'));
-                                    }
-                                });
-                            }).catch(error => {
-                                toastr.error(error.message ||
-                                    'Error validating transaction items');
                             });
                         }
                     });

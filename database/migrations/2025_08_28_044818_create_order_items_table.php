@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('transaction_id')->constrained('transactions');
             $table->foreignId('service_id')->constrained('services');
             $table->integer('quantity');
+            $table->integer('kilograms');
             $table->decimal('subtotal', 10, 2);
             $table->timestamps();
         });
