@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ asset('dist/img/AdminLTELogo.png') }}">
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
