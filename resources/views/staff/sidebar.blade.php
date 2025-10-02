@@ -24,15 +24,15 @@
 
             <li class="nav-header">MAIN COMPONENTS</li>
             <li class="nav-item">
-                <a href="{{ route('admin.customersManagement') }}" class="nav-link @yield('active-customers')">
-                    <i class="bi bi-people"></i>
-                    <p>Customers</p>
-                </a>
-            </li>
-            <li class="nav-item">
                 <a href="{{ route('admin.ordersManagement') }}" class="nav-link @yield('active-transactions')">
                     <i class="bi bi-bag-check"></i>
                     <p>Transactions</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('admin.customersManagement') }}" class="nav-link @yield('active-customers')">
+                    <i class="bi bi-people"></i>
+                    <p>Customers</p>
                 </a>
             </li>
 

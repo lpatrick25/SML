@@ -54,12 +54,12 @@ Route::prefix('admin')->middleware('auth')->group(function() {
 });
 
 Route::prefix('staff')->middleware('auth')->group(function() {
-    Route::get('dashboard', [StaffController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('dashboard', [StaffController::class, 'dashboard'])->name('staff.dashboard');
 
 
     // Main Components
-    Route::get('customers-management', [StaffController::class, 'customersManagement'])->name('admin.customersManagement');
-    Route::get('orders-management', [StaffController::class, 'ordersManagement'])->name('admin.ordersManagement');
+    Route::get('customers-management', [StaffController::class, 'customersManagement'])->name('staff.customersManagement');
+    Route::get('orders-management', [StaffController::class, 'ordersManagement'])->name('staff.ordersManagement');
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -118,6 +118,9 @@ Route::resource('transactions', TransactionController::class)->names([
 ]);
 Route::patch('/transactions/{transaction}/status', [TransactionController::class, 'changeStatus']);
 Route::post('/transactions/getTotalAmount', [TransactionController::class, 'getTotalAmount']);
+Route::post('/transactions/{transaction}/payment', [TransactionController::class, 'processPayment']);
+Route::get('/transactions/{transaction}/getPayment', [TransactionController::class, 'getPayment']);
+Route::get('/transactions/{transaction}/success', [TransactionController::class, 'paymentSuccess'])->name('transactions.success');
 
 Route::resource('payments', PaymentController::class)->names([
     'index' => 'payments.index',

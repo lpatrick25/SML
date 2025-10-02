@@ -9,6 +9,7 @@ class Order extends Model
     protected $table = 'transactions';
 
     protected $fillable = [
+        'transaction_number',
         'customer_id',
         'staff_id',
         'transaction_date',

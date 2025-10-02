@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
+use App\Models\Item;
+use App\Models\Service;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -33,7 +36,10 @@ class AdminController extends Controller
 
     public function ordersManagement()
     {
-        return view('admin.orders-management');
+        $services = Service::all();
+        $customers = Customer::all();
+        $items = Item::all();
+        return view('admin.orders-management', compact('services', 'customers', 'items'));
     }
 
     public function itemManagement()

@@ -4,15 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Transaction\StoreTransactionRequest;
 use App\Http\Requests\Transaction\UpdateTransactionRequest;
+use App\Http\Resources\PaymongoSession\PaymongoSessionResource;
 use App\Http\Resources\Transaction\TransactionCollection;
 use App\Http\Resources\Transaction\TransactionResource;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\PaymongoSession;
 use App\Models\Service;
 use App\Services\TransactionServices;
+use GuzzleHttp\Client;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
 
 class TransactionController extends Controller
 {
@@ -127,5 +131,80 @@ class TransactionController extends Controller
         }
 
         return response()->json(['load' => $load, 'totalAmount' => $totalAmount]);
+    }
+
+    public function processPayment(Request $request, int $transactionId): JsonResponse
+    {
+        $validated = $request->validate([
+            'payment_method' => 'required|in:cash,gcash,paymaya',
+            'billing' => 'nullable|array', // For online: name, email, phone overrides
+            'billing.name' => 'string',
+            'billing.email' => 'email',
+            'billing.phone' => 'string',
+        ]);
+
+        try {
+            $result = $this->transactionService->processPayment($transactionId, $validated['payment_method'], $validated['billing'] ?? []);
+            return response()->json($result, $result['success'] ? 200 : 400);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 422);
+        }
+    }
+
+    // Add success route handler
+    public function paymentSuccess(int $transactionId): View
+    {
+        $transaction = Order::findOrFail($transactionId);
+
+        $paymongoSession = PaymongoSession::where('transaction_id', $transactionId)
+            ->where('status', 'active')
+            ->latest()
+            ->first();
+
+        if ($paymongoSession) {
+            // Fetch latest PayMongo session data
+            $client = new Client();
+            $response = $client->request('GET', 'https://api.paymongo.com/v1/checkout_sessions/' . $paymongoSession->session_id, [
+                'headers' => [
+                    'Content-Type'  => 'application/json',
+                    'Accept'        => 'application/json',
+                    'Authorization' => 'Basic ' . base64_encode(env('PAYMONGO_SECRET_KEY') . ':'),
+                ],
+            ]);
+
+            $responseData = json_decode($response->getBody(), true);
+            $attributes   = $responseData['data']['attributes'] ?? [];
+
+            $paymentMethod = $attributes['payment_method_types'][0] ?? 'gcash';
+
+            //Create Payment
+            Payment::create([
+                'transaction_id' => $transaction->id,
+                'amount' => $transaction->total_amount,
+                'payment_method' => $paymentMethod,
+            ]);
+
+            // Instead of delete, update old session as "expired"
+            $paymongoSession->update(['status' => 'paid']);
+            $transaction->update(['payment_status' => 'Paid']);
+        }
+
+        $transaction = Order::findOrFail($transactionId)->load('customer', 'staff', 'transactionItems.service');
+        // Verify payment status via PayMongo if needed
+        return view('payment-success', compact('transaction'));
+    }
+
+    public function getPayment(Order $transaction): JsonResponse
+    {
+        $paymongoSession = PaymongoSession::where('transaction_id', $transaction->id)->where('status', '!=', 'expired')->first();
+
+        if (!$paymongoSession) {
+            return response()->json(['message' => 'No payment session found'], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => new PaymongoSessionResource($paymongoSession)
+        ]);
     }
 }

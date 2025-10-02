@@ -16,17 +16,13 @@ class UpdateTransactionRequest extends FormRequest
     {
         return [
             'customer_id' => ['required', Rule::exists('customers', 'id')],
-            'staff_id' => ['nullable', Rule::exists('users', 'id')],
+            'staff_id' => ['required', Rule::exists('users', 'id')],
+            'item_id' => ['required', Rule::exists('items', 'id')],
+            'service_id' => ['required', Rule::exists('services', 'id')],
             'transaction_date' => ['required', 'date'],
-            'transaction_status' => ['required', Rule::in(['Pending', 'In Progress', 'Completed', 'Picked Up', 'Cancelled'])],
             'total_amount' => ['required', 'numeric', 'min:0', 'max:99999999.99'],
-            'payment_status' => ['required', Rule::in(['Unpaid', 'Paid', 'Partial'])],
-            'transaction_items' => ['required', 'array', 'min:1'],
-            'transaction_items.*.service_id' => ['required', Rule::exists('services', 'id')],
-            'transaction_items.*.quantity' => ['required', 'integer', 'min:1'],
-            'transaction_items.*.item_items' => ['sometimes', 'array', 'min:1'],
-            'transaction_items.*.item_items.*.item_id' => ['required_with:transaction_items.*.item_items', Rule::exists('items', 'id')],
-            'transaction_items.*.item_items.*.quantity' => ['required_with:transaction_items.*.item_items', 'integer', 'min:1'],
+            'kilograms' => ['required', 'numeric', 'min:0', 'max:99999999.99'],
+            'load' => ['required', 'numeric', 'min:0', 'max:99999999.99'],
         ];
     }
 

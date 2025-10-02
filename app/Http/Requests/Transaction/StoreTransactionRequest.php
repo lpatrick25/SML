@@ -20,9 +20,7 @@ class StoreTransactionRequest extends FormRequest
             'item_id' => ['required', Rule::exists('items', 'id')],
             'service_id' => ['required', Rule::exists('services', 'id')],
             'transaction_date' => ['required', 'date'],
-            'transaction_status' => ['required', Rule::in(['Pending', 'In Progress', 'Completed', 'Picked Up', 'Cancelled'])],
             'total_amount' => ['required', 'numeric', 'min:0', 'max:99999999.99'],
-            'payment_status' => ['required', Rule::in(['Unpaid', 'Paid', 'Partial'])],
             'kilograms' => ['required', 'numeric', 'min:0', 'max:99999999.99'],
             'load' => ['required', 'numeric', 'min:0', 'max:99999999.99'],
         ];

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->string('transaction_number');
             $table->foreignId('customer_id')->constrained('customers');
             $table->foreignId('staff_id')->nullable()->constrained('users');
             $table->date('transaction_date');
